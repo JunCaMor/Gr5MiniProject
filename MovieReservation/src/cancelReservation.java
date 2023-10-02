@@ -1,38 +1,68 @@
 package src;
 
-import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-public class cancelReservation{
+public class CancelReservation {
 
-    public cancelReservation() throws FileNotFoundException{
-        Scanner input = new Scanner(System.in);
+    public void cancel() {
+        try (Scanner input = new Scanner(System.in)) {
+            System.out.println("\tCancel Reservation Page");
+            System.out.print("Please enter Reservation ID: ");
 
-        System.out.println("\tCancel Reservation Page");
-        System.out.println("Please enter Reservation ID: ");
+            String reservationID = input.nextLine();
+            boolean idFound = false; // Flag to track if the ID is found
 
-        String reservationID = input.nextLine();
+            try {
+                // Read the CSV file
+                BufferedReader br = new BufferedReader(new FileReader("Reservations.csv"));
+                List<String> lines = new ArrayList<>();
+                String line;
 
-        try {
-            FileInputStream fis = new FileInputStream("Reservation.csv");
-    
-            System.out.println("Data in the file: ");
-    
-            // Reads the first line
-            int i = fis.read();
-    
-           while(i != -1) {
-               System.out.print((char)i);
-    
-               // Reads next line from the file
-               i = fis.read();
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split(",");
+                    if (parts.length > 0 && parts[0].equals("\"" + reservationID + "\"")) {
+                        idFound = true; // Mark ID as found
+                        continue; // Skip this line, as it matches the reservationID
+                    }
+                    lines.add(line);
+                }
+
+                br.close();
+
+                // Write back to the CSV file without the matching reservationID
+                BufferedWriter bw = new BufferedWriter(new FileWriter("Reservations.csv"));
+                for (String updatedLine : lines) {
+                    bw.write(updatedLine);
+                    bw.newLine();
+                }
+
+                bw.close();
+
+                if (idFound) {
+                    System.out.print("Are you sure you want to cancel reservation? <yes/no>: ");
+                    String confirm = input.nextLine();
+                    if (confirm.equalsIgnoreCase("yes")) {
+                        System.out.println("Reservation with ID " + reservationID + " has been canceled.");
+                    } else {
+                        System.out.println("Reservation with ID " + reservationID + " has not been canceled.");
+                        return;
+                    }
+                } else {
+                    System.out.println("ID not found.");
+                }
+            } catch (FileNotFoundException e) {
+                System.err.println("File not found: " + e.getMessage());
+            } catch (IOException e) {
+                System.err.println("Error while processing the file: " + e.getMessage());
             }
-            fis.close();
-         }
-    
-         catch(Exception e) {
-            e.getStackTrace();
-         }
+        }
     }
 }
