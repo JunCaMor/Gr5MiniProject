@@ -1,87 +1,175 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.moviereservation;
 
+import java.util.Scanner;
+
+/**
+ *
+ * @author junel.mora
+ */
+//import java.util.ArrayList;
+//import java.util.HashMap;
+//import java.util.List;
 public class ReserveSeat {
-    private String id = "";
+    private String id="";
     private String date;
     private String cinemaNum;
     private String time;
     private String showing;
     private String movie;
     private String movieLength;
-    HashMap<String, List<String>> movieDeets = new HashMap<>();
-
-    // private Checkout checkout;
-    public ReserveSeat(String date, String cinemaNum, String time, String showing, String movie, String movieLength) {
-        id = date + "0" + String.valueOf(cinemaNum);
-        id = id.replaceFirst("20", "").replace("-", "");
-        this.date = date;
-        this.cinemaNum = cinemaNum;
-        this.time = time;
-        this.showing = showing;
-        this.movie = movie;
-        this.movieLength = movieLength;
-        movieDeets.put(id, List.of(date, cinemaNum, time, showing, movie, movieLength));
-        // new ReserveSeat(id, date, cinemaNum, time, showing, movie, movieLength);
+    private int CSVSize;
+    private int seats;
+    private ReserveSeat[] movies;
+    private Scanner sc=new Scanner(System.in);
+    //private Checkout checkout;
+    public ReserveSeat(String date, String cinemaNum, String time, String showing, String movie, String movieLength){
+        int movieKeyCharLimit=0;
+        //For automatically generating an id for each movie.
+        id=String.valueOf(movie.charAt(0)); // Gets first letter of movie. 
+        for(int i=1; i<movie.length(); i++){ // Getting two more key sub-values.
+            if(movie.charAt(i-1)==' '){
+                id+=String.valueOf(movie.charAt(i));
+                movieKeyCharLimit++;
+            }
+            if(movieKeyCharLimit==2){
+                break; // Limits the characters of a movie key into three.
+            }
+        }
+        while(id.length()<3){
+            id+="0";
+        }
+        while(time.length()<5){
+            time="0"+time;
+        }
+        id+=time.substring(0, 2);
+        id+=cinemaNum;
+        // Key generator ends here
+        this.date=date;
+        this.cinemaNum=cinemaNum;
+        this.time=time;
+        this.showing=showing;
+        this.movie=movie;
+        this.movieLength=movieLength;
+        this.seats=50;
     }
-
-    public void setDate(String date) {
-        this.date = date;
+    public ReserveSeat(int size){
+        movies=new ReserveSeat[size];
+        setCSVSize(size);
     }
-
-    public String getDate() {
+    public void copyMovies(ReserveSeat[] copy){
+        System.arraycopy(copy,0,movies,0,copy.length);
+    }       
+    public void setDate(String date){
+        this.date=date;
+    }
+    public String getDate(){
         return date;
     }
-
-    public void setCinemaNum(String cinemaNum) {
-        this.cinemaNum = cinemaNum;
+    public void setCinemaNum(String cinemaNum){
+        this.cinemaNum=cinemaNum;
     }
-
-    public String getCinemaNum() {
+    public String getCinemaNum(){
         return cinemaNum;
     }
-
-    public void setTime(String time) {
-        this.time = time;
+    public void setTime(String time){
+        this.time=time;
     }
-
-    public String getTime() {
+    public String getTime(){
         return time;
     }
-
-    public void setShowing(String showing) {
-        this.showing = showing;
+    public void setShowing(String showing){
+        this.showing=showing;
     }
-
-    public String getShowing() {
+    public String getShowing(){
         return showing;
     }
-
-    public void setMovie(String movie) {
-        this.movie = movie;
+    public void setMovie(String movie){
+        this.movie=movie;
     }
-
-    public String getMovie() {
+    public String getMovie(){
         return movie;
     }
-
-    public void setMovieLength(String movieLength) {
-        this.movieLength = movieLength;
+    public void setMovieLength(String movieLength){
+        this.movieLength=movieLength;
     }
-
-    public String getMovieLength() {
+    public String getMovieLength(){
         return movieLength;
     }
-
-    @Override
-    public String toString() {
-        return id + ", " + date + ", " + cinemaNum + ", " + time + ", " + showing + ", " + movie + ", " + movieLength;
+    public void setCSVSize(int size){
+        this.CSVSize=size;
     }
-
-    public void displayCinemaMovies() {
-        int i = 0;
-        System.out.println("Welcome to Cinema World!");
-
+    public int getCSVSize(){
+        return CSVSize;
+    }
+    public void setSeats(int seats){
+        this.seats=seats;
+    }
+    public int getSeats(){
+        return seats;
+    }
+    @Override
+    public String toString(){
+        return "ID: "+id+", DATE: "+date+", CINEMA: "+cinemaNum+", TIME: "+time+", SHOWING: "+showing+", TITLE: "+movie+", HOURS: "+movieLength+", SEATS: "+seats;
+    }
+    public void displayMovies(){
+        int i=0, j=0, k=0, findPair=0;
+        String[] display;
+        display = new String[getCSVSize()];
+        System.out.println("Welcome to Cinema World!\n\nHere are our movies:");
+        for(i=0; i<getCSVSize();i++){
+            display[k]=movies[i].getMovie();
+            for(j=0; j<=i;j++){
+                if(display[k]==display[j]&&k!=j){
+                    display[k]=null;
+                    k--;
+                    break;
+                }
+            }
+            k++;
+        }
+        for(i=0; i<k; i++){
+            System.out.println("["+(i+1)+"] "+display[i]);
+        }
+        System.out.print("Choose your movie: ");
+        int choice=sc.nextInt();
+        while(choice>k||choice<1){
+            System.out.print("Please choose within the choices: ");
+            choice=sc.nextInt();
+        }
+        chooseSchedule(display[choice-1]);
+    }
+    public void chooseSchedule(String movie){
+        int i=0, k=0, totalNumberOfScreens=0;
+        ReserveSeat[] display;
+        System.out.println("Great! Here are our schedules for the "+movie+" movie");
+        for(i=0; i<getCSVSize(); i++){
+            if(movies[i].getMovie().equals(movie)){
+                totalNumberOfScreens++;
+            }
+        }
+        display=new ReserveSeat[totalNumberOfScreens];
+        for(i=0; i<getCSVSize(); i++){
+            if(movies[i].getMovie().equals(movie)&&movies[i].getShowing().equals("true")){
+                display[k++]=movies[i];
+            }
+        }
+        for(i=0;i<k;i++){
+            System.out.println("["+(i+1)+"] Cinema: "+display[i].getCinemaNum()+", Date: "+display[i].getDate()+", Time: "+display[i].getTime()+", Movie Length: "+display[i].getMovieLength());
+        }
+        System.out.print("Choose your schedule: ");
+        int choice=sc.nextInt();
+        while(choice>k||choice<1){
+            System.out.print("Please choose within the schedules: ");
+            choice=sc.nextInt();
+        }
+        chooseSeats(display[choice-1]);
+    }
+    public void chooseSeats(ReserveSeat display){
+        System.out.println("Awesome! Now choose your seats for the "+display.getMovie()+" movie");
+        
     }
 }
