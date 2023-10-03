@@ -6,8 +6,7 @@ import java.util.Scanner;
 public class CheckoutPage {
 
 
-    public static void checkout(CheckoutPage Checkout){
-
+    public static void checkout(){
 
         Scanner scan = new Scanner(System.in);
 

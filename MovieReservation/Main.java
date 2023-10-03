@@ -4,6 +4,7 @@ class main {
 
 	public static void main(String[] args) throws ParseException {
 		Scanner scan = new Scanner(System.in);
+		CancelReservation cr = new CancelReservation();
 		int transaction;
 		System.out.println("Welcome to Cinema World!\n");
 		System.out.println("[1] Reserve Movie Ticket\n[2] Cancel Reservation Ticket\n");
@@ -12,13 +13,10 @@ class main {
 		if (transaction == 1){
 			System.out.println("Insert ReserveSeat module here");
 		} else if (transaction == 2){
-			System.out.println("Insert CancelReservation module here");
+			cr.cancel();
 		}else{
 			System.out.println("Invalid Transaction");
 		}
 	}
-
-		CancelReservation cr = new CancelReservation();
-		cr.cancel();
-	}
 }
+
