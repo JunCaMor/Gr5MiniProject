@@ -89,11 +89,6 @@ public class CancelReservation {
                 } finally {
                     System.out.print("\nDo you want to cancel another reservation? [Y/N]: ");
                     String anotherReservation = input.nextLine();
-                    // if (anotherReservation.equalsIgnoreCase("y")) {
-                    //     response = true;
-                    // } else {
-                    //     response = false;
-                    // }
                     response = anotherReservation.equalsIgnoreCase("y");
                 }
             }
