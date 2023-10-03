@@ -1,4 +1,4 @@
-public class main {
+public class Main {
 
 	public static void main(String[] args) {
 		ReserveSeat[] reserve=new ReserveSeat[]{
@@ -8,5 +8,4 @@ public class main {
 		System.out.println(reserve[0]);
 		System.out.println(reserve[1]);
 	}
-
 }

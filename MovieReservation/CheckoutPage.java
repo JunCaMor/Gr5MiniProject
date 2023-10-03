@@ -47,9 +47,7 @@ public class CheckoutPage {
         this.movie = movie;
     }
 
-
-
-    public static void Checkout(CheckoutPage Checkout){
+    public static void checkout(CheckoutPage Checkout){
         Scanner scan = new Scanner(System.in);
 
         System.out.println();
