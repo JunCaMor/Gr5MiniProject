@@ -3,6 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.moviereservation;
+
+import java.util.Scanner;
+
+/**
+ *
+ * @author junel.mora
+ */
+//import java.util.ArrayList;
+//import java.util.HashMap;
+//import java.util.List;
 public class ReserveSeat {
     private String id="";
     private String date;
@@ -13,6 +23,7 @@ public class ReserveSeat {
     private String movieLength;
     private int CSVSize;
     private ReserveSeat[] movies;
+    private Scanner sc=new Scanner(System.in);
     //private Checkout checkout;
     public ReserveSeat(String date, String cinemaNum, String time, String showing, String movie, String movieLength){
         int movieKeyCharLimit=0;
@@ -97,25 +108,40 @@ public class ReserveSeat {
         return id+", "+date+", "+cinemaNum+", "+time+", "+showing+", "+movie+", "+movieLength;
     }
     public void displayMovies(){
-        int i=0, j=0, k=-1, findPair=0;
+        int i=0, j=0, k=0, findPair=0;
         String[] display;
         display = new String[getCSVSize()];
-        System.out.println("Welcome to Cinema World!\nSelect your movie:");
+        System.out.println("Welcome to Cinema World!\n\nHere are our movies:");
         
         for(i=0; i<getCSVSize();i++){
-            display[++k]=movies[i].getMovie();
+            display[k]=movies[i].getMovie();
             for(j=0; j<=i;j++){
-                System.out.println("i:"+i+"k:"+k+"j:"+j+" "+display[i]+"/"+display[j]);
-                if(display[k]==display[j]&&i!=j){
+                if(display[k]==display[j]&&k!=j){
+                    display[k]=null;
                     k--;
-                    System.out.println(k);
+                    break;
                 }
             }
+            k++;
         }
         for(i=0; i<k; i++){
-            System.out.println(display[i]);
+            System.out.println("["+(i+1)+"] "+display[i]);
+        }
+        System.out.print("Choose your movie: ");
+        int choice=sc.nextInt();
+        while(choice>k||choice<1){
+            System.out.print("Please choose within the choices: ");
+            choice=sc.nextInt();
+        }
+        chooseSchedule(display[choice-1]);
+    }
+    public void chooseSchedule(String movie){
+        int i=0;
+        System.out.println("Great! Here are our schedules for the "+movie+" movie");
+        for(i=0; i<getCSVSize(); i++){
+            if(movies[i].getMovie().equals(movie)){
+                System.out.println(movies[i]);
+            }
         }
     }
 }
-
-
