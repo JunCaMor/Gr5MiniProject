@@ -22,6 +22,7 @@ public class ReserveSeat {
     private String movie;
     private String movieLength;
     private int CSVSize;
+    private int seats;
     private ReserveSeat[] movies;
     private Scanner sc=new Scanner(System.in);
     //private Checkout checkout;
@@ -52,17 +53,12 @@ public class ReserveSeat {
         this.time=time;
         this.showing=showing;
         this.movie=movie;
-        this.movieLength=movieLength;  
+        this.movieLength=movieLength;
+        this.seats=50;
     }
     public ReserveSeat(int size){
         movies=new ReserveSeat[size];
         setCSVSize(size);
-    }
-    public void setCSVSize(int size){
-        this.CSVSize=size;
-    }
-    public int getCSVSize(){
-        return CSVSize;
     }
     public void copyMovies(ReserveSeat[] copy){
         System.arraycopy(copy,0,movies,0,copy.length);
@@ -103,16 +99,27 @@ public class ReserveSeat {
     public String getMovieLength(){
         return movieLength;
     }
+    public void setCSVSize(int size){
+        this.CSVSize=size;
+    }
+    public int getCSVSize(){
+        return CSVSize;
+    }
+    public void setSeats(int seats){
+        this.seats=seats;
+    }
+    public int getSeats(){
+        return seats;
+    }
     @Override
     public String toString(){
-        return id+", "+date+", "+cinemaNum+", "+time+", "+showing+", "+movie+", "+movieLength;
+        return "ID: "+id+", DATE: "+date+", CINEMA: "+cinemaNum+", TIME: "+time+", SHOWING: "+showing+", TITLE: "+movie+", HOURS: "+movieLength+", SEATS: "+seats;
     }
     public void displayMovies(){
         int i=0, j=0, k=0, findPair=0;
         String[] display;
         display = new String[getCSVSize()];
         System.out.println("Welcome to Cinema World!\n\nHere are our movies:");
-        
         for(i=0; i<getCSVSize();i++){
             display[k]=movies[i].getMovie();
             for(j=0; j<=i;j++){
@@ -136,12 +143,33 @@ public class ReserveSeat {
         chooseSchedule(display[choice-1]);
     }
     public void chooseSchedule(String movie){
-        int i=0;
+        int i=0, k=0, totalNumberOfScreens=0;
+        ReserveSeat[] display;
         System.out.println("Great! Here are our schedules for the "+movie+" movie");
         for(i=0; i<getCSVSize(); i++){
             if(movies[i].getMovie().equals(movie)){
-                System.out.println(movies[i]);
+                totalNumberOfScreens++;
             }
         }
+        display=new ReserveSeat[totalNumberOfScreens];
+        for(i=0; i<getCSVSize(); i++){
+            if(movies[i].getMovie().equals(movie)&&movies[i].getShowing().equals("true")){
+                display[k++]=movies[i];
+            }
+        }
+        for(i=0;i<k;i++){
+            System.out.println("["+(i+1)+"] Cinema: "+display[i].getCinemaNum()+", Date: "+display[i].getDate()+", Time: "+display[i].getTime()+", Movie Length: "+display[i].getMovieLength());
+        }
+        System.out.print("Choose your schedule: ");
+        int choice=sc.nextInt();
+        while(choice>k||choice<1){
+            System.out.print("Please choose within the schedules: ");
+            choice=sc.nextInt();
+        }
+        chooseSeats(display[choice-1]);
+    }
+    public void chooseSeats(ReserveSeat display){
+        System.out.println("Awesome! Now choose your seats for the "+display.getMovie()+" movie");
+        
     }
 }
