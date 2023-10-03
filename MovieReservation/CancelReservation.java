@@ -1,5 +1,3 @@
-package src;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -10,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class cancelReservation {
+public class CancelReservation {
 
     public void cancel() {
         try (Scanner input = new Scanner(System.in)) {
