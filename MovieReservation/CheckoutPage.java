@@ -57,13 +57,5 @@ public class CheckoutPage {
         else{
             System.out.println("Please enter only y or n . ");
         }
-
-
     }
-
-    public static void main(String[] args) {
-        checkout(null);
-    }
-
-
 }
