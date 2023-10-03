@@ -1,7 +1,8 @@
+import java.text.ParseException;
 import java.util.Scanner;
-public class main {
+class main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 		Scanner scan = new Scanner(System.in);
 		int transaction;
 		System.out.println("Welcome to Cinema World!\n");
@@ -17,4 +18,7 @@ public class main {
 		}
 	}
 
+		CancelReservation cr = new CancelReservation();
+		cr.cancel();
+	}
 }
