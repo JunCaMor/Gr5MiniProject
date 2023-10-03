@@ -1,8 +1,18 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.moviereservation;
+
+import java.util.Scanner;
+
 /**
  *
  * @author junel.mora
  */
-import java.util.Scanner;
+//import java.util.ArrayList;
+//import java.util.HashMap;
+//import java.util.List;
 public class ReserveSeat {
     private String id="";
     private String date;
@@ -12,7 +22,7 @@ public class ReserveSeat {
     private String movie;
     private String movieLength;
     private int CSVSize;
-    private int seats;
+    private String[][] seats;
     private ReserveSeat[] movies;
     private Scanner sc=new Scanner(System.in);
     //private Checkout checkout;
@@ -44,7 +54,8 @@ public class ReserveSeat {
         this.showing=showing;
         this.movie=movie;
         this.movieLength=movieLength;
-        this.seats=50;
+        this.seats=new String[8][5]={{"A1","A2","A3","A4","A5"},{"B1","B2","B3","B4","B5"},{"C1","C2","C3","C4","C5"},{"D1","D2","D3","D4","D5"},
+                                    {"E1","E2","E3","E4","E5"},{"F1","F2","F3","F4","F5"},{"G1","G2","G3","G4","G5"},{"H1","H2","H3","H4","H5"}};
     }
     public ReserveSeat(int size){
         movies=new ReserveSeat[size];
@@ -95,10 +106,10 @@ public class ReserveSeat {
     public int getCSVSize(){
         return CSVSize;
     }
-    public void setSeats(int seats){
-        this.seats=seats;
-    }
-    public int getSeats(){
+//    public void setSeats(String[][] seats){
+//        this.seats=seats;
+//    }
+    public String[][] getSeats(){
         return seats;
     }
     @Override
@@ -159,7 +170,12 @@ public class ReserveSeat {
         chooseSeats(display[choice-1]);
     }
     public void chooseSeats(ReserveSeat display){
+        int i=0, j=0;
         System.out.println("Awesome! Now choose your seats for the "+display.getMovie()+" movie");
-        
+        for(i=0; i<8; i++){
+            for(j=0; j<5; j++){
+                System.out.println(seats[i][j]);
+            }
+        }
     }
 }
