@@ -7,5 +7,8 @@ public class Main {
 		};
 		System.out.println(reserve[0]);
 		System.out.println(reserve[1]);
+
+		CancelReservation cr = new CancelReservation();
+		cr.cancel();
 	}
 }
