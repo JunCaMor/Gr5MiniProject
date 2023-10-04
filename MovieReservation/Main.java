@@ -3,6 +3,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 class main {
 
@@ -18,11 +20,19 @@ class main {
 		if (transaction == 1){
 			int noOfSchedules = 0;
 			try {
-				 BufferedReader br = new BufferedReader(new FileReader("MovieSchedule.csv"));
-                    //List<String> schedules = new ArrayList<>();
-					String line;
+				 BufferedReader brcount = new BufferedReader(new FileReader("MovieSchedule.csv"));
+					String linecount;
 					String csvSplitBy = ",";
-                    while ((line = br.readLine()) != null){
+					while ((linecount = brcount.readLine()) != null){ //cout for number of schedules 
+						noOfSchedules++;
+					}
+					brcount.close();
+
+					BufferedReader br = new BufferedReader(new FileReader("MovieSchedule.csv"));
+					String line;
+					ReserveSeat[] reserve = new ReserveSeat[noOfSchedules];
+					int i = 0;
+					while ((line = br.readLine()) != null){
 						String[]data = line.split(csvSplitBy);
 						String date = data[0];
 						String cinemaNo = data[1];
@@ -30,11 +40,12 @@ class main {
 						String isPremiere = data[3];
 						String movieTitle = data[4];
 						String duration = data [5];
-						new ReserveSeat(date, cinemaNo, time, isPremiere, movieTitle, duration);
-						noOfSchedules++;
+					    reserve[i] = new ReserveSeat(date, cinemaNo, time, isPremiere, movieTitle, duration);
+						i++;
 					 }
 					 br.close();
 					ReserveSeat rs = new ReserveSeat(noOfSchedules);
+					rs.copyMovies(reserve);
 					rs.displayMovies();
 				
 			} catch (FileNotFoundException e) {
