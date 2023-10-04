@@ -52,10 +52,10 @@ public class ReserveSeat {
         id+=time.substring(0, 2);
         id+=cinemaNum;
         // Key generator ends here
-        seats.put(id, List.of("A1]","[A2]","[A3]","[A4]","[A5]","[B1]","[B2]","[B3]","[B4]","[B5]",
-                "[C1]","[C2]","[C3]","[C4]","[C5]","[D1]","[D2]","[D3]","[D4]","[D5]",
-                "[E1]","[E2]","[E3]","[E4]","[E5]","[F1]","[F2]","[F3]","[F4]","[F5]",
-                "[G1]","[G2]","[G3]","[G4]","[G5]","[H1]","[H2]","[H3]","[H4]","[H5"));
+        seats.put(id, List.of("A1","A2","A3","A4","A5","B1","B2","B3","B4","B5",
+                "C1","C2","C3","C4","C5","D1","D2","D3","D4","D5",
+                "E1","E2","E3","E4","E5","F1","F2","F3","F4","F5",
+                "G1","G2","G3","G4","G5","H1","H2","H3","H4","H5"));
         //System.out.println(seats.get(id));
         
         
@@ -68,7 +68,17 @@ public class ReserveSeat {
     }
     public void copyMovies(ReserveSeat[] copy){
         System.arraycopy(copy,0,movies,0,copy.length);
-    }       
+    }
+    public String getID(){
+        return id;
+    }
+    public List<String> getSeats(){
+        return seats.get(id);
+    }
+    public void setSeats(ReserveSeat display, String[] assign){
+        seats.put(display.id, List.of(assign));
+        //System.out.println(seats.get(display.id));
+    }
     public void setDate(String date){
         this.date=date;
     }
@@ -115,29 +125,36 @@ public class ReserveSeat {
 //        this.seats=seats;
 //    }
     public String getSeatArrangement(){
+        String seatArrangement=String.valueOf(seats.get(id)).replace(",","").replace("[","").replace("]","").replace(" ","");
         String movieSeats="";
         movieSeats="\t +----------------------+\n";
         movieSeats+="\t |\t  SCREEN        |\n";
         movieSeats+="\t +----------------------+\n\n";
-        movieSeats+="|      | "+String.valueOf(seats.get(id)).replace(",","").substring(0,25);
-        movieSeats+="\n|      |"+String.valueOf(seats.get(id)).replace(",","").substring(24,50);
-        movieSeats+="\n|      |"+String.valueOf(seats.get(id)).replace(",","").substring(49,75);
-        movieSeats+="\n| EXIT |"+String.valueOf(seats.get(id)).replace(",","").substring(74,100);
-        movieSeats+="\n|      |"+String.valueOf(seats.get(id)).replace(",","").substring(99,125);
-        movieSeats+="\n|      |"+String.valueOf(seats.get(id)).replace(",","").substring(124,150);
-        movieSeats+="\n|      |"+String.valueOf(seats.get(id)).replace(",","").substring(149,175);
-        movieSeats+="\n|      |"+String.valueOf(seats.get(id)).replace(",","").substring(174,199);
+        movieSeats+="|      | ["+seatArrangement.substring(0,2)+"] ["+seatArrangement.substring(2,4)+"] ["+seatArrangement.substring(4,6)+"] ["+seatArrangement.substring(6,8)+"] ["+seatArrangement.substring(8,10)+"]";
+        movieSeats+="\n|      | ["+seatArrangement.substring(10,12)+"] ["+seatArrangement.substring(12,14)+"] ["+seatArrangement.substring(14,16)+"] ["+seatArrangement.substring(16,18)+"] ["+seatArrangement.substring(18,20)+"]";
+        movieSeats+="\n|      | ["+seatArrangement.substring(20,22)+"] ["+seatArrangement.substring(22,24)+"] ["+seatArrangement.substring(24,26)+"] ["+seatArrangement.substring(26,28)+"] ["+seatArrangement.substring(28,30)+"]";
+        movieSeats+="\n| EXIT | ["+seatArrangement.substring(30,32)+"] ["+seatArrangement.substring(32,34)+"] ["+seatArrangement.substring(34,36)+"] ["+seatArrangement.substring(36,38)+"] ["+seatArrangement.substring(38,40)+"]";
+        movieSeats+="\n|      | ["+seatArrangement.substring(40,42)+"] ["+seatArrangement.substring(42,44)+"] ["+seatArrangement.substring(44,46)+"] ["+seatArrangement.substring(46,48)+"] ["+seatArrangement.substring(48,50)+"]";
+        movieSeats+="\n|      | ["+seatArrangement.substring(50,52)+"] ["+seatArrangement.substring(52,54)+"] ["+seatArrangement.substring(54,56)+"] ["+seatArrangement.substring(56,58)+"] ["+seatArrangement.substring(58,60)+"]";
+        movieSeats+="\n|      | ["+seatArrangement.substring(60,62)+"] ["+seatArrangement.substring(62,64)+"] ["+seatArrangement.substring(64,66)+"] ["+seatArrangement.substring(66,68)+"] ["+seatArrangement.substring(68,70)+"]";
+        movieSeats+="\n|      | ["+seatArrangement.substring(70,72)+"] ["+seatArrangement.substring(72,74)+"] ["+seatArrangement.substring(74,76)+"] ["+seatArrangement.substring(76,78)+"] ["+seatArrangement.substring(78,80)+"]";
         return movieSeats;
     }
-    public List<String> chooseSeat(String[] chosenSeats){
-        assign=seats.get(id);
+    public void chooseSeat(ReserveSeat display, String[] chosenSeats){
         int index;
+        String[] seats={"A1","A2","A3","A4","A5","B1","B2","B3","B4","B5",
+                "C1","C2","C3","C4","C5","D1","D2","D3","D4","D5",
+                "E1","E2","E3","E4","E5","F1","F2","F3","F4","F5",
+                "G1","G2","G3","G4","G5","H1","H2","H3","H4","H5"};
+        List<String> seat=display.getSeats();
         for(int i=0; i<chosenSeats.length; i++){
-            index=assign.indexOf(chosenSeats[i]);
-            assign.remove(chosenSeats[i]);
-            assign.add(index, "XX");
+            for(int j=0; j<40; j++){
+                if(chosenSeats[i].equals(seats[j])){
+                    seats[j]="XX";
+                }
+            }
         }
-        return assign;
+        setSeats(display,seats);
     }
     public int getAvailableSeatAmount(){
         int availableSeats=0;
@@ -262,8 +279,9 @@ public class ReserveSeat {
             }
             if(confirm.equals("Y")){
                 //System.out.println(getSeatArrangement());
-                System.out.println(chooseSeat(chosenSeats));
+                chooseSeat(display,chosenSeats);
             }
         }
+        display.getSeatArrangement();
     }
 }
