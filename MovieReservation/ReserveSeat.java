@@ -216,7 +216,7 @@ public class ReserveSeat {
         chooseSeats(display[Integer.parseInt(choice)-1]);
     }
     public void chooseSeats(ReserveSeat display){
-                 int instanceChecker=0;
+        int instanceChecker=0;
         String[] chosenSeats;
         String confirm="N";
         System.out.println("\nAwesome! Now choose your seats for the "+display.getMovie()+" movie");
