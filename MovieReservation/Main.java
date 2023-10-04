@@ -3,24 +3,23 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 class main {
 
 	public static void main(String[] args) throws ParseException {
+		// Object Initializations
 		Scanner scan = new Scanner(System.in);
 		CancelReservation cr = new CancelReservation();
-		//ReserveSeat rs = new ReserveSeat(0);
 		int transaction;
+
 		System.out.println("Welcome to Cinema World!\n");
 		System.out.println("[1] Reserve Movie Ticket\n[2] Cancel Reservation Ticket\n");
 		System.out.print("Enter your desired transaction: ");
 		transaction = scan.nextInt();
 		if (transaction == 1){
-			int noOfSchedules = 0;
+			int noOfSchedules = 0; // Reserve Seat Module
 			try {
-				 BufferedReader brcount = new BufferedReader(new FileReader("MovieSchedule.csv"));
+				 BufferedReader brcount = new BufferedReader(new FileReader("MovieSchedule.csv")); // Read the movie schedules from the csv file
 					String linecount;
 					String csvSplitBy = ",";
 					while ((linecount = brcount.readLine()) != null){ //cout for number of schedules 
@@ -28,7 +27,7 @@ class main {
 					}
 					brcount.close();
 
-					BufferedReader br = new BufferedReader(new FileReader("MovieSchedule.csv"));
+					BufferedReader br = new BufferedReader(new FileReader("MovieSchedule.csv")); // Read the movie schedules from the csv file
 					String line;
 					ReserveSeat[] reserve = new ReserveSeat[noOfSchedules];
 					int i = 0;
@@ -58,7 +57,6 @@ class main {
 		}else{
 			System.out.println("Invalid Transaction");
 		}
-
 		scan.close();
 	}
 }

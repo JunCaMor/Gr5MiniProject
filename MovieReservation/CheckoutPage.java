@@ -13,7 +13,7 @@ public class CheckoutPage {
         System.out.println();
 
         //Display movie, Date, Screening time, Number of seats,  Seat number, Total price
-        String file ="MovieReservation\\Reservations.csv";
+        String file ="Reservations.csv";
         BufferedReader reader=null;
         String line="";
 
