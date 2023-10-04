@@ -19,11 +19,13 @@ public class ReserveSeat {
     private String showing;
     private String movie;
     private String movieLength;
+    private String ticketRefNum;
     private int CSVSize;
     private String[] seatSample={"A1","A2","A3","A4","A5","B1","B2","B3","B4","B5",
                 "C1","C2","C3","C4","C5","D1","D2","D3","D4","D5",
                 "E1","E2","E3","E4","E5","F1","F2","F3","F4","F5",
                 "G1","G2","G3","G4","G5","H1","H2","H3","H4","H5"};
+    private int availableSeatsNum=50;
     private HashMap<String,List<String>> seats=new HashMap<>();
     private HashMap<String,List<String>> ticket=new HashMap<>();
     private List<String> assign=new ArrayList<String>();
@@ -37,6 +39,7 @@ public class ReserveSeat {
         this.showing=showing;
         this.movie=movie;
         this.movieLength=movieLength;
+        this.availableSeatsNum=50;
         int movieKeyCharLimit=0;
         //For automatically generating an id for each movie.
         id=String.valueOf(movie.charAt(0)); // Gets first letter of movie. 
@@ -79,8 +82,8 @@ public class ReserveSeat {
     public String getID(){
         return id;
     }
-    public List<String> getSeats(){
-        return seats.get(id);
+    public List<String> getSeats(ReserveSeat display){
+        return seats.get(display.id);
     }
     public void setSeats(ReserveSeat display, String[] assign){
         seats.put(display.id, List.of(assign));
@@ -128,6 +131,13 @@ public class ReserveSeat {
     public int getCSVSize(){
         return CSVSize;
     }
+    public void setTicketRefNum(String ticket){
+        int refNum=(int)Math.random()*2;
+        this.ticketRefNum=ticket+String.valueOf(refNum);
+    }
+    public String getTicketRefNum(){
+        return ticketRefNum;
+    }
 //    public void setSeats(String[][] seats){
 //        this.seats=seats;
 //    }
@@ -147,35 +157,49 @@ public class ReserveSeat {
         movieSeats+="\n|      | ["+seatArrangement.substring(70,72)+"] ["+seatArrangement.substring(72,74)+"] ["+seatArrangement.substring(74,76)+"] ["+seatArrangement.substring(76,78)+"] ["+seatArrangement.substring(78,80)+"]";
         return movieSeats;
     }
+    public String getSeatArrangementFinal(ReserveSeat display){
+        String seatArrangement=String.valueOf(seats.get(display.id)).replace(",","").replace("[","").replace("]","").replace(" ","");
+        String movieSeats="";
+        movieSeats="\t +----------------------+\n";
+        movieSeats+="\t |\t  SCREEN        |\n";
+        movieSeats+="\t +----------------------+\n\n";
+        movieSeats+="|      | ["+seatArrangement.substring(0,2)+"] ["+seatArrangement.substring(2,4)+"] ["+seatArrangement.substring(4,6)+"] ["+seatArrangement.substring(6,8)+"] ["+seatArrangement.substring(8,10)+"]";
+        movieSeats+="\n|      | ["+seatArrangement.substring(10,12)+"] ["+seatArrangement.substring(12,14)+"] ["+seatArrangement.substring(14,16)+"] ["+seatArrangement.substring(16,18)+"] ["+seatArrangement.substring(18,20)+"]";
+        movieSeats+="\n|      | ["+seatArrangement.substring(20,22)+"] ["+seatArrangement.substring(22,24)+"] ["+seatArrangement.substring(24,26)+"] ["+seatArrangement.substring(26,28)+"] ["+seatArrangement.substring(28,30)+"]";
+        movieSeats+="\n| EXIT | ["+seatArrangement.substring(30,32)+"] ["+seatArrangement.substring(32,34)+"] ["+seatArrangement.substring(34,36)+"] ["+seatArrangement.substring(36,38)+"] ["+seatArrangement.substring(38,40)+"]";
+        movieSeats+="\n|      | ["+seatArrangement.substring(40,42)+"] ["+seatArrangement.substring(42,44)+"] ["+seatArrangement.substring(44,46)+"] ["+seatArrangement.substring(46,48)+"] ["+seatArrangement.substring(48,50)+"]";
+        movieSeats+="\n|      | ["+seatArrangement.substring(50,52)+"] ["+seatArrangement.substring(52,54)+"] ["+seatArrangement.substring(54,56)+"] ["+seatArrangement.substring(56,58)+"] ["+seatArrangement.substring(58,60)+"]";
+        movieSeats+="\n|      | ["+seatArrangement.substring(60,62)+"] ["+seatArrangement.substring(62,64)+"] ["+seatArrangement.substring(64,66)+"] ["+seatArrangement.substring(66,68)+"] ["+seatArrangement.substring(68,70)+"]";
+        movieSeats+="\n|      | ["+seatArrangement.substring(70,72)+"] ["+seatArrangement.substring(72,74)+"] ["+seatArrangement.substring(74,76)+"] ["+seatArrangement.substring(76,78)+"] ["+seatArrangement.substring(78,80)+"]";
+        return movieSeats;
+    }
     public void chooseSeat(ReserveSeat display, String[] chosenSeats){
-        int index;
+        int availableSeats=getAvailableSeatsNum();
         String[] seats={"A1","A2","A3","A4","A5","B1","B2","B3","B4","B5",
                 "C1","C2","C3","C4","C5","D1","D2","D3","D4","D5",
                 "E1","E2","E3","E4","E5","F1","F2","F3","F4","F5",
                 "G1","G2","G3","G4","G5","H1","H2","H3","H4","H5"};
-        List<String> seat=display.getSeats();
+        List<String> seat=getSeats(display);
         for(int i=0; i<chosenSeats.length; i++){
             for(int j=0; j<40; j++){
                 if(chosenSeats[i].equals(seats[j])){
                     seats[j]="XX";
+                    availableSeats--;
                 }
             }
         }
         setSeats(display,seats);
+        setAvailableSeatsNum(availableSeats);
     }
-    public int getAvailableSeatAmount(){
-        int availableSeats=0;
-        char taken='*', reserved='X';
-        for(int i=0; i<getSeatArrangement().length();i++){
-            if(getSeatArrangement().charAt(i)==taken||getSeatArrangement().charAt(i)==reserved){
-                availableSeats++;
-            }
-        }
-        return 50-availableSeats/2;
+    public int getAvailableSeatsNum(){
+        return availableSeatsNum;
+    }
+    public void setAvailableSeatsNum(int availableSeatsNum){
+        this.availableSeatsNum=availableSeatsNum;
     }
     @Override
     public String toString(){
-        return "ID: "+id+", DATE: "+date+", CINEMA: "+cinemaNum+", TIME: "+time+", SHOWING: "+showing+", TITLE: "+movie+", HOURS: "+movieLength+", SEATS: "+getAvailableSeatAmount();
+        return "ID: "+id+", DATE: "+date+", CINEMA: "+cinemaNum+", TIME: "+time+", SHOWING: "+showing+", TITLE: "+movie+", HOURS: "+movieLength+", SEATS: "+getAvailableSeatsNum();
     }
     public void displayMovies(){
         int i=0, j=0, k=0, findPair=0;
@@ -235,6 +259,7 @@ public class ReserveSeat {
         chooseSeats(display[Integer.parseInt(choice)-1]);
     }
     public void chooseSeats(ReserveSeat display){
+        String ticketSeats="";
         int instanceChecker=0;
         String[] chosenSeats;
         String confirm="N";
@@ -249,7 +274,6 @@ public class ReserveSeat {
         System.out.println("Please choose "+Integer.parseInt(choice)+" seats: ");
         chosenSeats=new String[Integer.parseInt(choice)];
         while(confirm.equals("N")){
-            String seats="";
             for(int i=0; i<Integer.parseInt(choice); i++){
                 System.out.print("["+(i+1)+"] ");
                 String choice2=sc.nextLine();
@@ -272,12 +296,12 @@ public class ReserveSeat {
                     }
                 }while(instanceChecker==1);
                 chosenSeats[i]=choice2;
-                seats+=choice2;
+                ticketSeats+=choice2;
                 if(i<Integer.parseInt(choice)-1){
-                    seats+=", ";
+                    ticketSeats+=", ";
                 }
             }
-            System.out.println(seats);
+            System.out.println("Your chosen seats:\n"+ticketSeats);
             System.out.print("Confirm? [Y/N] ");
             confirm=sc.nextLine();
             while(!confirm.equals("Y")&&!confirm.equals("N")||confirm.equals("Y")&&confirm.equals("N")){
@@ -290,5 +314,10 @@ public class ReserveSeat {
             }
         }
         display.getSeatArrangement();
+        System.out.println(getSeatArrangementFinal(display));
+        setTicketRefNum(display.id);
+        System.out.println(getTicketRefNum());
+        ticket.put(getTicketRefNum(), List.of(getTicketRefNum(),display.getDate(),display.getCinemaNum(), display.getTime(), ticketSeats));
+        System.out.println(ticket.get(getTicketRefNum()));
     }
 }
