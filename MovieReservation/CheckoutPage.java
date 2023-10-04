@@ -35,7 +35,6 @@ public class CheckoutPage {
             try {
                 reader.close();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -57,5 +56,7 @@ public class CheckoutPage {
         else{
             System.out.println("Please enter only y or n . ");
         }
+
+        scan.close();
     }
 }
