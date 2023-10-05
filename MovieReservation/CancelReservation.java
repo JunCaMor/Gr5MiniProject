@@ -40,6 +40,8 @@ public class CancelReservation {
                                 System.out.println("____________________________________________________________");
                                 System.out.println("\nCinema " + parts[2].replace("\"", ""));
 
+                                // Indexes will be updated based on final format of Reservations.csv
+
                                 String inputDateStr = parts[1].replace("\"", ""); // Change index based on location of
                                                                                   // date
 
@@ -66,15 +68,10 @@ public class CancelReservation {
 
                             }
 
-                            if (reservationID.length() > 7) {
-                                msg = "You have exceeded the maximum number of ID length.";
-                                response = true;
-                            } else if (reservationID.length() == 0 || reservationID.length() < 7) {
-                                msg = "Please enter a valid length of your reservation ID to cancel.";
-                                response = true;
+                            if (reservationID.length() == 0) {
+                                msg = "You have not entered any reservation ID.";
                             } else {
                                 msg = "ID not found.";
-                                response = true;
                             }
 
                             lines.add(line);
@@ -100,6 +97,7 @@ public class CancelReservation {
                             another = true;
                         } else {
                             System.out.println("\n" + msg);
+                            another = false;
                         }
                     } catch (FileNotFoundException e) {
                         System.err.println("File not found: " + e.getMessage());
@@ -124,7 +122,7 @@ public class CancelReservation {
                             response = false;
                             notValid = false;
                         } else {
-                            System.out.println("You have entered an invalid input!");
+                            System.out.println("You have entered an invalid input.");
                         }
                     }
                 }
