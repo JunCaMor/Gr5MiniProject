@@ -1,4 +1,3 @@
-import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,7 +8,7 @@ public class ReserveSeat {
     private String date;
     private String cinemaNum;
     private String time;
-    private String showing;
+    private String premiere;
     private String movie;
     private String movieLength;
     private String ticketRefNum;
@@ -25,11 +24,11 @@ public class ReserveSeat {
     private ReserveSeat[] movies;
     private Scanner sc=new Scanner(System.in);
     //private Checkout checkout;
-    public ReserveSeat(String date, String cinemaNum, String time, String showing, String movie, String movieLength){
+    public ReserveSeat(String date, String cinemaNum, String time, String premiere, String movie, String movieLength){
         this.date=date;
         this.cinemaNum=cinemaNum;
         this.time=time;
-        this.showing=showing;
+        this.premiere=premiere;
         this.movie=movie;
         this.movieLength=movieLength;
         this.availableSeatsNum=50;
@@ -100,11 +99,11 @@ public class ReserveSeat {
     public String getTime(){
         return time;
     }
-    public void setShowing(String showing){
-        this.showing=showing;
+    public void setShowing(String premiere){
+        this.premiere=premiere;
     }
     public String getShowing(){
-        return showing;
+        return premiere;
     }
     public void setMovie(String movie){
         this.movie=movie;
@@ -148,6 +147,7 @@ public class ReserveSeat {
         movieSeats+="\n|      | ["+seatArrangement.substring(50,52)+"] ["+seatArrangement.substring(52,54)+"] ["+seatArrangement.substring(54,56)+"] ["+seatArrangement.substring(56,58)+"] ["+seatArrangement.substring(58,60)+"]";
         movieSeats+="\n|      | ["+seatArrangement.substring(60,62)+"] ["+seatArrangement.substring(62,64)+"] ["+seatArrangement.substring(64,66)+"] ["+seatArrangement.substring(66,68)+"] ["+seatArrangement.substring(68,70)+"]";
         movieSeats+="\n|      | ["+seatArrangement.substring(70,72)+"] ["+seatArrangement.substring(72,74)+"] ["+seatArrangement.substring(74,76)+"] ["+seatArrangement.substring(76,78)+"] ["+seatArrangement.substring(78,80)+"]";
+        movieSeats+="\n\nLegend: [**] Taken, [!!] Reserved\n";
         return movieSeats;
     }
     public String getSeatArrangementFinal(ReserveSeat display){
@@ -164,19 +164,19 @@ public class ReserveSeat {
         movieSeats+="\n|      | ["+seatArrangement.substring(50,52)+"] ["+seatArrangement.substring(52,54)+"] ["+seatArrangement.substring(54,56)+"] ["+seatArrangement.substring(56,58)+"] ["+seatArrangement.substring(58,60)+"]";
         movieSeats+="\n|      | ["+seatArrangement.substring(60,62)+"] ["+seatArrangement.substring(62,64)+"] ["+seatArrangement.substring(64,66)+"] ["+seatArrangement.substring(66,68)+"] ["+seatArrangement.substring(68,70)+"]";
         movieSeats+="\n|      | ["+seatArrangement.substring(70,72)+"] ["+seatArrangement.substring(72,74)+"] ["+seatArrangement.substring(74,76)+"] ["+seatArrangement.substring(76,78)+"] ["+seatArrangement.substring(78,80)+"]";
+        movieSeats+="\n\nLegend: [**] Taken, [!!] Reserved\n";
         return movieSeats;
     }
-    public void chooseSeat(ReserveSeat display, String[] chosenSeats){
+    public void selectSeats(ReserveSeat display, String[] chosenSeats){
         int availableSeats=getAvailableSeatsNum();
         String[] seats={"A1","A2","A3","A4","A5","B1","B2","B3","B4","B5",
                 "C1","C2","C3","C4","C5","D1","D2","D3","D4","D5",
                 "E1","E2","E3","E4","E5","F1","F2","F3","F4","F5",
                 "G1","G2","G3","G4","G5","H1","H2","H3","H4","H5"};
-        List<String> seat=getSeats(display);
         for(int i=0; i<chosenSeats.length; i++){
             for(int j=0; j<40; j++){
                 if(chosenSeats[i].equals(seats[j])){
-                    seats[j]="XX";
+                    seats[j]="**";
                     availableSeats--;
                 }
             }
@@ -192,10 +192,10 @@ public class ReserveSeat {
     }
     @Override
     public String toString(){
-        return "ID: "+id+", DATE: "+date+", CINEMA: "+cinemaNum+", TIME: "+time+", SHOWING: "+showing+", TITLE: "+movie+", HOURS: "+movieLength+", SEATS: "+getAvailableSeatsNum();
+        return "ID: "+id+", DATE: "+date+", CINEMA: "+cinemaNum+", TIME: "+time+", PREMIERE: "+premiere+", TITLE: "+movie+", HOURS: "+movieLength+", SEATS: "+getAvailableSeatsNum();
     }
     public void displayMovies(){
-        int i=0, j=0, k=0, findPair=0;
+        int i=0, j=0, k=0;
         String[] display;
         display = new String[getCSVSize()];
         System.out.println("Welcome to Cinema World!\n\nHere are our movies:");
@@ -223,6 +223,73 @@ public class ReserveSeat {
         }
         chooseSchedule(display[Integer.parseInt(choice)-1]);
     }
+    public void createTicketPaper(String cinemaNum, String movie, String date, String time, String[] chosenSeats, String ticketID, double price){
+        String ticketPaper="", temp="";
+        int i;
+        ticketPaper+="+--------------------------------------------------+";//51
+        ticketPaper+="\n|Cinema "+cinemaNum+"\t\t\t\t\t  |";
+        ticketPaper+="\n|"+movie;
+        for(i=0; i<50-movie.length();i++){
+            ticketPaper+=" ";
+        }
+        ticketPaper+="|\n|";
+        temp+=date.substring(8,10)+" ";
+        temp+=date.substring(5,7).equals("01")?"January":
+                date.substring(5,7).equals("02")?"February":
+                date.substring(5,7).equals("03")?"March":
+                date.substring(5,7).equals("04")?"April":
+                date.substring(5,7).equals("05")?"May":
+                date.substring(5,7).equals("06")?"June":
+                date.substring(5,7).equals("07")?"July":
+                date.substring(5,7).equals("08")?"August":
+                date.substring(5,7).equals("09")?"September":
+                date.substring(5,7).equals("10")?"October":
+                date.substring(5,7).equals("11")?"November":"December";
+        temp+=" "+date.substring(0,4)+" @ ";
+        temp+=time.substring(0,2).equals("08")?"8:"+time.substring(3,5)+" AM":
+                time.substring(0,2).equals("09")?"9:"+time.substring(3,5)+" AM":
+                time.substring(0,2).equals("10")?"10:"+time.substring(3,5)+" AM":
+                time.substring(0,2).equals("11")?"11:"+time.substring(3,5)+" AM":
+                time.substring(0,2).equals("12")?"12:"+time.substring(3,5)+" NN":
+                time.substring(0,2).equals("13")?"1:"+time.substring(3,5)+" PM":
+                time.substring(0,2).equals("14")?"2:"+time.substring(3,5)+" PM":
+                time.substring(0,2).equals("15")?"3:"+time.substring(3,5)+" PM":
+                time.substring(0,2).equals("16")?"4:"+time.substring(3,5)+" PM":
+                time.substring(0,2).equals("17")?"5:"+time.substring(3,5)+" PM":
+                time.substring(0,2).equals("18")?"6:"+time.substring(3,5)+" PM":
+                time.substring(0,2).equals("19")?"7:"+time.substring(3,5)+" PM":"8:"+time.substring(3,5)+" PM";
+        ticketPaper+=temp;
+        for(i=0; i<50-temp.length();i++){
+            ticketPaper+=" ";
+        }
+        ticketPaper+="|\n|";
+        temp="[";
+        int hideOtherSeats=chosenSeats.length;
+        if(hideOtherSeats>9)
+            hideOtherSeats=9;
+        for(i=0; i<hideOtherSeats;i++){
+            temp+=chosenSeats[i]+"] ";
+            if(i<chosenSeats.length-1){
+                temp+="[";
+            }
+        }
+        if(chosenSeats.length>9){
+            temp+="...";
+        }
+        ticketPaper+=temp;
+        for(i=0; i<50-temp.length();i++){
+            ticketPaper+=" ";
+        }
+        ticketPaper+="|\n|\t\t\t\t\t\t  |\n|";
+        temp=ticketID+"                PHP "+String.valueOf(price);
+        ticketPaper+=temp;
+        for(i=0; i<50-temp.length();i++){
+            ticketPaper+=" ";
+        }
+        ticketPaper+="|\n+--------------------------------------------------+";
+        System.out.println(ticketPaper);
+        
+    }
     public void chooseSchedule(String movie){
         int i=0, k=0, totalNumberOfScreens=0;
         ReserveSeat[] display;
@@ -234,7 +301,7 @@ public class ReserveSeat {
         }
         display=new ReserveSeat[totalNumberOfScreens];
         for(i=0; i<getCSVSize(); i++){
-            if(movies[i].getMovie().equals(movie)&&movies[i].getShowing().equals("true")){
+            if(movies[i].getMovie().equals(movie)){
                 display[k++]=movies[i];
             }
         }
@@ -294,7 +361,7 @@ public class ReserveSeat {
                     ticketSeats+=", ";
                 }
             }
-            System.out.println("Your chosen seats:\n"+ticketSeats);
+            System.out.println("\nYour chosen seats:\n"+ticketSeats);
             System.out.print("Confirm? [Y/N] ");
             confirm=sc.nextLine();
             while(!confirm.equals("Y")&&!confirm.equals("N")||confirm.equals("Y")&&confirm.equals("N")){
@@ -303,14 +370,48 @@ public class ReserveSeat {
             }
             if(confirm.equals("Y")){
                 //System.out.println(getSeatArrangement());
-                chooseSeat(display,chosenSeats);
+                selectSeats(display,chosenSeats);
             }
         }
         display.getSeatArrangement();
         System.out.println(getSeatArrangementFinal(display));
         setTicketRefNum(display.id);
-        System.out.println(getTicketRefNum());
-        ticket.put(getTicketRefNum(), List.of(getTicketRefNum(),display.getDate(),display.getCinemaNum(), display.getTime(), ticketSeats));
-        System.out.println(ticket.get(getTicketRefNum()));
+        generatePrice(display,ticketSeats,chosenSeats);
+    }
+    public void generatePrice(ReserveSeat display, String ticketSeats, String[] chosenSeats){
+        String confirm="N", ticketPaper="";
+        double price=0;
+        while(confirm.equals("N")&&display.getShowing().equals("false")){
+            price=0;
+            for(int i=0; i<chosenSeats.length;i++){
+                System.out.print("Is the person at seat "+chosenSeats[i]+" a senior citizen? [Y/N] ");
+                confirm=sc.next()+sc.nextLine();
+                while(!confirm.equals("Y")&&!confirm.equals("N")||confirm.equals("Y")&&confirm.equals("N")){
+                    System.out.print("Please choose between 'Y' or 'N': ");
+                    confirm=sc.next()+sc.nextLine();
+                }
+                if(confirm.equals("Y")){
+                    price+=280;
+                }
+                else{
+                    price+=350;
+                }
+            }
+            System.out.print("Your total price is: PHP"+price+"\nConfirm? [Y/N] ");
+            confirm=sc.nextLine();
+            while(!confirm.equals("Y")&&!confirm.equals("N")||confirm.equals("Y")&&confirm.equals("N")){
+                System.out.print("Please choose between 'Y' or 'N': ");
+                confirm=sc.next()+sc.nextLine();
+            }
+        }
+        if(display.getShowing().equals("true")){
+            for(int i=0; i<chosenSeats.length; i++){
+                price+=500;
+            }
+        }
+        createTicketPaper(display.getCinemaNum(),display.getMovie(),display.getDate(),display.getTime(),chosenSeats,getTicketRefNum(),price);
+        ticket.put(getTicketRefNum(), List.of(getTicketRefNum(),display.getDate(),display.getCinemaNum(), display.getTime(), ticketSeats, String.valueOf(price)));
+        System.out.println("\nEnjoy your movie!");
+        //System.out.println(ticket.get(getTicketRefNum()));
     }
 }
