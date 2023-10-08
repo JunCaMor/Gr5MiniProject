@@ -22,7 +22,7 @@ class main {
 				 BufferedReader brcount = new BufferedReader(new FileReader("MovieSchedule.csv")); // Read the movie schedules from the csv file
 					String linecount;
 					String csvSplitBy = ",";
-					while ((linecount = brcount.readLine()) != null){ //cout for number of schedules 
+					while ((linecount = brcount.readLine()) != null){ //cout for number of schedules
 						noOfSchedules++;
 					}
 					brcount.close();
@@ -46,7 +46,7 @@ class main {
 					ReserveSeat rs = new ReserveSeat(noOfSchedules);
 					rs.copyMovies(reserve);
 					rs.displayMovies();
-				
+
 			} catch (FileNotFoundException e) {
 				System.err.println("File not found: " + e.getMessage());
 			} catch (IOException e) {
