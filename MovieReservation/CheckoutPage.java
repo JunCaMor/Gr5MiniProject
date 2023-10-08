@@ -6,15 +6,14 @@ import java.util.Scanner;
 public class CheckoutPage {
 
 
-    public static void checkout(CheckoutPage Checkout){
-
+    public static void checkout(){
 
         Scanner scan = new Scanner(System.in);
 
         System.out.println();
 
         //Display movie, Date, Screening time, Number of seats,  Seat number, Total price
-        String file ="MovieReservation\\Reservations.csv";
+        String file ="Reservations.csv";
         BufferedReader reader=null;
         String line="";
 
@@ -36,7 +35,6 @@ public class CheckoutPage {
             try {
                 reader.close();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -59,12 +57,6 @@ public class CheckoutPage {
             System.out.println("Please enter only y or n . ");
         }
 
-
+        scan.close();
     }
-
-    public static void main(String[] args) {
-        checkout(null);
-    }
-
-
 }

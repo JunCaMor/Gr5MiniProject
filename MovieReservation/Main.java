@@ -1,28 +1,63 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.ParseException;
-
-public class Main {
+import java.util.Scanner;
+class main {
 
 	public static void main(String[] args) throws ParseException {
-		ReserveSeat[] reserve = new ReserveSeat[] {
-				new ReserveSeat("2021-06-01", "1", "12:30", "true", "HP7 and the Deathly Hallows (Part 2)", "2.25"),
-				new ReserveSeat("2021-06-01", "1", "15:00", "false", "HP7 and the Deathly Hallows (Part 2)", "2.25"),
-				new ReserveSeat("2021-06-01", "1", "17:30", "false", "HP7 and the Deathly Hallows (Part 2)", "2.25"),
-				new ReserveSeat("2021-06-01", "1", "20:00", "false", "HP7 and the Deathly Hallows (Part 2)", "2.25"),
-				new ReserveSeat("2021-06-01", "2", "12:45", "false", "Kung Fu Panda 2", "1.75"),
-				new ReserveSeat("2021-06-01", "2", "02:45", "false", "Kung Fu Panda 2", "1.75"),
-				new ReserveSeat("2021-06-01", "2", "04:45", "false", "Kung Fu Panda 2", "1.75"),
-				new ReserveSeat("2021-06-01", "2", "06:45", "false", "Kung Fu Panda 2", "1.75"),
-				new ReserveSeat("2021-06-01", "2", "08:45", "false", "Kung Fu Panda 2", "1.75"),
-				new ReserveSeat("2021-06-01", "3", "13:15", "false", "Transformers: Dark of the Moon", "2.75"),
-				new ReserveSeat("2021-06-01", "3", "16:15", "false", "Transformers: Dark of the Moon", "2.75"),
-				new ReserveSeat("2021-06-01", "3", "19:15", "false", "Transformers: Dark of the Moon", "2.75"),
-				new ReserveSeat("2021-06-01", "4", "12:00", "false", "I Am Number Four", "2.00"),
-				new ReserveSeat("2021-06-01", "4", "14:15", "false", "I Am Number Four", "2.00"),
-				new ReserveSeat("2021-06-01", "4", "16:30", "false", "I Am Number Four", "2.00"),
-				new ReserveSeat("2021-06-01", "4", "19:00", "false", "I Am Number Four", "2.00")
-		};
-		ReserveSeat display = new ReserveSeat(reserve.length);
-		display.copyMovies(reserve);
-		display.displayMovies();
+		// Object Initializations
+		Scanner scan = new Scanner(System.in);
+		CancelReservation cr = new CancelReservation();
+		int transaction;
+
+		System.out.println("Welcome to Cinema World!\n");
+		System.out.println("[1] Reserve Movie Ticket\n[2] Cancel Reservation Ticket\n");
+		System.out.print("Enter your desired transaction: ");
+		transaction = scan.nextInt();
+		if (transaction == 1){
+			int noOfSchedules = 0; // Reserve Seat Module
+			try {
+				 BufferedReader brcount = new BufferedReader(new FileReader("MovieSchedule.csv")); // Read the movie schedules from the csv file
+					String linecount;
+					String csvSplitBy = ",";
+					while ((linecount = brcount.readLine()) != null){ //cout for number of schedules
+						noOfSchedules++;
+					}
+					brcount.close();
+
+					BufferedReader br = new BufferedReader(new FileReader("MovieSchedule.csv")); // Read the movie schedules from the csv file
+					String line;
+					ReserveSeat[] reserve = new ReserveSeat[noOfSchedules];
+					int i = 0;
+					while ((line = br.readLine()) != null){
+						String[]data = line.split(csvSplitBy);
+						String date = data[0];
+						String cinemaNo = data[1];
+						String time = data[2];
+						String isPremiere = data[3];
+						String movieTitle = data[4];
+						String duration = data [5];
+					    reserve[i] = new ReserveSeat(date, cinemaNo, time, isPremiere, movieTitle, duration);
+						i++;
+					 }
+					 br.close();
+					ReserveSeat rs = new ReserveSeat(noOfSchedules);
+					rs.copyMovies(reserve);
+					rs.displayMovies();
+
+			} catch (FileNotFoundException e) {
+				System.err.println("File not found: " + e.getMessage());
+			} catch (IOException e) {
+                        System.err.println("Error while processing the file: " + e.getMessage());
+            }
+		} else if (transaction == 2){
+			cr.cancel(); // Cancel Reservation Module
+		}else{
+			System.out.println("Invalid Transaction");
+		}
+		scan.close();
 	}
 }
+
