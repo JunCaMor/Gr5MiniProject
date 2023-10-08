@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +21,6 @@ public class ReserveSeat {
     private int availableSeatsNum = 50;
     private HashMap<String, List<String>> seats = new HashMap<>();
     private HashMap<String, List<String>> ticket = new HashMap<>();
-    private List<String> assign = new ArrayList<String>();
     private ReserveSeat[] movies;
     private Scanner sc = new Scanner(System.in);
 
@@ -157,42 +155,7 @@ public class ReserveSeat {
         return ticketRefNum;
     }
 
-    public String getSeatArrangement() {
-        String seatArrangement = String.valueOf(seats.get(id)).replace(",", "").replace("[", "").replace("]", "")
-                .replace(" ", "");
-        String movieSeats = "";
-        movieSeats = "\t +----------------------+\n";
-        movieSeats += "\t |\t  SCREEN        |\n";
-        movieSeats += "\t +----------------------+\n\n";
-        movieSeats += "|      | [" + seatArrangement.substring(0, 2) + "] [" + seatArrangement.substring(2, 4) + "] ["
-                + seatArrangement.substring(4, 6) + "] [" + seatArrangement.substring(6, 8) + "] ["
-                + seatArrangement.substring(8, 10) + "]";
-        movieSeats += "\n|      | [" + seatArrangement.substring(10, 12) + "] [" + seatArrangement.substring(12, 14)
-                + "] [" + seatArrangement.substring(14, 16) + "] [" + seatArrangement.substring(16, 18) + "] ["
-                + seatArrangement.substring(18, 20) + "]";
-        movieSeats += "\n|      | [" + seatArrangement.substring(20, 22) + "] [" + seatArrangement.substring(22, 24)
-                + "] [" + seatArrangement.substring(24, 26) + "] [" + seatArrangement.substring(26, 28) + "] ["
-                + seatArrangement.substring(28, 30) + "]";
-        movieSeats += "\n| EXIT | [" + seatArrangement.substring(30, 32) + "] [" + seatArrangement.substring(32, 34)
-                + "] [" + seatArrangement.substring(34, 36) + "] [" + seatArrangement.substring(36, 38) + "] ["
-                + seatArrangement.substring(38, 40) + "]";
-        movieSeats += "\n|      | [" + seatArrangement.substring(40, 42) + "] [" + seatArrangement.substring(42, 44)
-                + "] [" + seatArrangement.substring(44, 46) + "] [" + seatArrangement.substring(46, 48) + "] ["
-                + seatArrangement.substring(48, 50) + "]";
-        movieSeats += "\n|      | [" + seatArrangement.substring(50, 52) + "] [" + seatArrangement.substring(52, 54)
-                + "] [" + seatArrangement.substring(54, 56) + "] [" + seatArrangement.substring(56, 58) + "] ["
-                + seatArrangement.substring(58, 60) + "]";
-        movieSeats += "\n|      | [" + seatArrangement.substring(60, 62) + "] [" + seatArrangement.substring(62, 64)
-                + "] [" + seatArrangement.substring(64, 66) + "] [" + seatArrangement.substring(66, 68) + "] ["
-                + seatArrangement.substring(68, 70) + "]";
-        movieSeats += "\n|      | [" + seatArrangement.substring(70, 72) + "] [" + seatArrangement.substring(72, 74)
-                + "] [" + seatArrangement.substring(74, 76) + "] [" + seatArrangement.substring(76, 78) + "] ["
-                + seatArrangement.substring(78, 80) + "]";
-        movieSeats += "\n\nLegend: [**] Taken, [!!] Reserved\n";
-        return movieSeats;
-    }
-
-    public String getSeatArrangementFinal(ReserveSeat display) {
+    public String getSeatArrangement(ReserveSeat display) {
         String seatArrangement = String.valueOf(seats.get(display.id)).replace(",", "").replace("[", "")
                 .replace("]", "").replace(" ", "");
         String movieSeats = "";
@@ -227,6 +190,48 @@ public class ReserveSeat {
         return movieSeats;
     }
 
+    // public String getSeatArrangementFinal(ReserveSeat display){
+    // String
+    // seatArrangement=String.valueOf(seats.get(display.id)).replace(",","").replace("[","").replace("]","").replace("
+    // ","");
+    // String movieSeats="";
+    // movieSeats="\t +----------------------+\n";
+    // movieSeats+="\t |\t SCREEN |\n";
+    // movieSeats+="\t +----------------------+\n\n";
+    // movieSeats+="| | ["+seatArrangement.substring(0,2)+"]
+    // ["+seatArrangement.substring(2,4)+"] ["+seatArrangement.substring(4,6)+"]
+    // ["+seatArrangement.substring(6,8)+"] ["+seatArrangement.substring(8,10)+"]";
+    // movieSeats+="\n| | ["+seatArrangement.substring(10,12)+"]
+    // ["+seatArrangement.substring(12,14)+"] ["+seatArrangement.substring(14,16)+"]
+    // ["+seatArrangement.substring(16,18)+"]
+    // ["+seatArrangement.substring(18,20)+"]";
+    // movieSeats+="\n| | ["+seatArrangement.substring(20,22)+"]
+    // ["+seatArrangement.substring(22,24)+"] ["+seatArrangement.substring(24,26)+"]
+    // ["+seatArrangement.substring(26,28)+"]
+    // ["+seatArrangement.substring(28,30)+"]";
+    // movieSeats+="\n| EXIT | ["+seatArrangement.substring(30,32)+"]
+    // ["+seatArrangement.substring(32,34)+"] ["+seatArrangement.substring(34,36)+"]
+    // ["+seatArrangement.substring(36,38)+"]
+    // ["+seatArrangement.substring(38,40)+"]";
+    // movieSeats+="\n| | ["+seatArrangement.substring(40,42)+"]
+    // ["+seatArrangement.substring(42,44)+"] ["+seatArrangement.substring(44,46)+"]
+    // ["+seatArrangement.substring(46,48)+"]
+    // ["+seatArrangement.substring(48,50)+"]";
+    // movieSeats+="\n| | ["+seatArrangement.substring(50,52)+"]
+    // ["+seatArrangement.substring(52,54)+"] ["+seatArrangement.substring(54,56)+"]
+    // ["+seatArrangement.substring(56,58)+"]
+    // ["+seatArrangement.substring(58,60)+"]";
+    // movieSeats+="\n| | ["+seatArrangement.substring(60,62)+"]
+    // ["+seatArrangement.substring(62,64)+"] ["+seatArrangement.substring(64,66)+"]
+    // ["+seatArrangement.substring(66,68)+"]
+    // ["+seatArrangement.substring(68,70)+"]";
+    // movieSeats+="\n| | ["+seatArrangement.substring(70,72)+"]
+    // ["+seatArrangement.substring(72,74)+"] ["+seatArrangement.substring(74,76)+"]
+    // ["+seatArrangement.substring(76,78)+"]
+    // ["+seatArrangement.substring(78,80)+"]";
+    // movieSeats+="\n\nLegend: [**] Taken, [!!] Reserved\n";
+    // return movieSeats;
+    // }
     public void selectSeats(ReserveSeat display, String[] chosenSeats) {
         int availableSeats = getAvailableSeatsNum();
         String[] seats = seatSample;
@@ -265,7 +270,7 @@ public class ReserveSeat {
         for (i = 0; i < getCSVSize(); i++) {
             display[k] = movies[i].getMovie();
             for (j = 0; j <= i; j++) {
-                if (display[k] == display[j] && k != j) {
+                if (display[k].equals(display[j]) && k != j) {
                     display[k] = null;
                     k--;
                     break;
@@ -401,7 +406,7 @@ public class ReserveSeat {
 
     public void chooseSeats(ReserveSeat display) {
         String ticketSeats = "";
-        int instanceChecker = 0;
+        int instanceChecker;
         String[] chosenSeats;
         String confirm = "N";
         setSeats(display, seatSample);
@@ -412,8 +417,8 @@ public class ReserveSeat {
             System.out.print("Please choose within the choices: ");
             choice = sc.nextLine();
         }
-        System.out.println(display.getSeatArrangement());
-        System.out.println("Please choose " + Integer.parseInt(choice) + " seat(s): ");
+        System.out.println(getSeatArrangement(display));
+        System.out.println("Please choose " + choice + " seat(s): ");
         chosenSeats = new String[Integer.parseInt(choice)];
         while (confirm.equals("N")) {
             for (int i = 0; i < Integer.parseInt(choice); i++) {
@@ -470,11 +475,12 @@ public class ReserveSeat {
                 confirm = sc.next() + sc.nextLine();
             }
             if (confirm.equals("Y")) {
+                // System.out.println(getSeatArrangement());
                 selectSeats(display, chosenSeats);
             }
         }
-        display.getSeatArrangement();
-        System.out.println(getSeatArrangementFinal(display));
+        // getSeatArrangement(display);
+        System.out.println(getSeatArrangement(display));
         setTicketRefNum(display.id);
         generatePrice(display, ticketSeats, chosenSeats);
     }
