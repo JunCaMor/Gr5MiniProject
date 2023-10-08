@@ -69,24 +69,12 @@ public class ReserveSeat {
         System.arraycopy(copy, 0, movies, 0, copy.length);
     }
 
+    public void setID(String id) {
+        this.id = id;
+    }
+
     public String getID() {
         return id;
-    }
-
-    public void setSeats(ReserveSeat display, String[] assign) {
-        seats.put(display.id, List.of(assign));
-    }
-
-    public List<String> getSeats(ReserveSeat display) {
-        return seats.get(display.id);
-    }
-
-    public String[] getSeatsAsString(ReserveSeat display) {
-        String[] movieSeats = new String[40];
-        for (int i = 0; i < movieSeats.length; i++) {
-            movieSeats[i] = String.valueOf(seats.get(display.id).get(i));
-        }
-        return movieSeats;
     }
 
     public void setDate(String date) {
@@ -143,6 +131,22 @@ public class ReserveSeat {
 
     public int getCSVSize() {
         return CSVSize;
+    }
+
+    public void setSeats(ReserveSeat display, String[] assign) {
+        seats.put(display.id, List.of(assign));
+    }
+
+    public List<String> getSeats(ReserveSeat display) {
+        return seats.get(display.id);
+    }
+
+    public String[] getSeatsAsString(ReserveSeat display) {
+        String[] movieSeats = new String[40];
+        for (int i = 0; i < movieSeats.length; i++) {
+            movieSeats[i] = String.valueOf(seats.get(display.id).get(i));
+        }
+        return movieSeats;
     }
 
     public int getAvailableSeatsNum() {
@@ -280,7 +284,7 @@ public class ReserveSeat {
         String temp = "";
         int i;
         ticketPaper += "+--------------------------------------------------+";// 51
-        ticketPaper += "\n|Cinema " + cinemaNum + "\t\t\t\t\t    |";
+        ticketPaper += "\n|Cinema " + cinemaNum + "\t\t\t\t\t  |";
         ticketPaper += "\n|" + movie;
         for (i = 0; i < 50 - movie.length(); i++) {
             ticketPaper += " ";
@@ -337,7 +341,7 @@ public class ReserveSeat {
         for (i = 0; i < 50 - temp.length(); i++) {
             ticketPaper += " ";
         }
-        ticketPaper += "|\n|\t\t\t\t\t\t    |\n|";
+        ticketPaper += "|\n|\t\t\t\t\t\t  |\n|";
         temp = ticketID + "                PHP " + String.valueOf(price);
         ticketPaper += temp;
         for (i = 0; i < 50 - temp.length(); i++) {
@@ -535,6 +539,9 @@ public class ReserveSeat {
                     if (movies[j].getID().contains(
                             String.valueOf(reserve.get(tickets.get(Integer.parseInt(choice) - 1))).substring(1, 13))) {
                         removeSeats(movies[j], reserve.get(tickets.get(Integer.parseInt(choice) - 1)).get(4));
+                        System.out.println(
+                                "\nTicket " + String.valueOf(reserve.get(tickets.get(Integer.parseInt(choice) - 1)))
+                                        .substring(1, 14) + " deleted");
                         tickets.remove(tickets.get(Integer.parseInt(choice) - 1));
                         System.out.println(getSeatArrangement(movies[j]));
                     }
