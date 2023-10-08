@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -18,9 +19,10 @@ public class ReserveSeat {
             "C1", "C2", "C3", "C4", "C5", "D1", "D2", "D3", "D4", "D5",
             "E1", "E2", "E3", "E4", "E5", "F1", "F2", "F3", "F4", "F5",
             "G1", "G2", "G3", "G4", "G5", "H1", "H2", "H3", "H4", "H5" };
-    private int availableSeatsNum = 50;
+    private int availableSeatsNum;
     private HashMap<String, List<String>> seats = new HashMap<>();
-    private HashMap<String, List<String>> ticket = new HashMap<>();
+    private HashMap<String, List<String>> reserve = new HashMap<>();
+    private List<String> tickets = new ArrayList<>();
     private ReserveSeat[] movies;
     private Scanner sc = new Scanner(System.in);
 
@@ -56,8 +58,6 @@ public class ReserveSeat {
         id += cinemaNum;
         // Key generator ends here
         seats.put(id, List.of(seatSample));
-        // System.out.println(seats.get(id));
-
     }
 
     public ReserveSeat(int size) {
@@ -75,7 +75,6 @@ public class ReserveSeat {
 
     public void setSeats(ReserveSeat display, String[] assign) {
         seats.put(display.id, List.of(assign));
-        // System.out.println(seats.get(display.id));
     }
 
     public List<String> getSeats(ReserveSeat display) {
@@ -146,6 +145,14 @@ public class ReserveSeat {
         return CSVSize;
     }
 
+    public int getAvailableSeatsNum() {
+        return availableSeatsNum;
+    }
+
+    public void setAvailableSeatsNum(int availableSeatsNum) {
+        this.availableSeatsNum = availableSeatsNum;
+    }
+
     public void setTicketRefNum(String ticket) {
         int refNum = (int) Math.random() * 2;
         this.ticketRefNum = ticket + String.valueOf(refNum);
@@ -190,75 +197,51 @@ public class ReserveSeat {
         return movieSeats;
     }
 
-    // public String getSeatArrangementFinal(ReserveSeat display){
-    // String
-    // seatArrangement=String.valueOf(seats.get(display.id)).replace(",","").replace("[","").replace("]","").replace("
-    // ","");
-    // String movieSeats="";
-    // movieSeats="\t +----------------------+\n";
-    // movieSeats+="\t |\t SCREEN |\n";
-    // movieSeats+="\t +----------------------+\n\n";
-    // movieSeats+="| | ["+seatArrangement.substring(0,2)+"]
-    // ["+seatArrangement.substring(2,4)+"] ["+seatArrangement.substring(4,6)+"]
-    // ["+seatArrangement.substring(6,8)+"] ["+seatArrangement.substring(8,10)+"]";
-    // movieSeats+="\n| | ["+seatArrangement.substring(10,12)+"]
-    // ["+seatArrangement.substring(12,14)+"] ["+seatArrangement.substring(14,16)+"]
-    // ["+seatArrangement.substring(16,18)+"]
-    // ["+seatArrangement.substring(18,20)+"]";
-    // movieSeats+="\n| | ["+seatArrangement.substring(20,22)+"]
-    // ["+seatArrangement.substring(22,24)+"] ["+seatArrangement.substring(24,26)+"]
-    // ["+seatArrangement.substring(26,28)+"]
-    // ["+seatArrangement.substring(28,30)+"]";
-    // movieSeats+="\n| EXIT | ["+seatArrangement.substring(30,32)+"]
-    // ["+seatArrangement.substring(32,34)+"] ["+seatArrangement.substring(34,36)+"]
-    // ["+seatArrangement.substring(36,38)+"]
-    // ["+seatArrangement.substring(38,40)+"]";
-    // movieSeats+="\n| | ["+seatArrangement.substring(40,42)+"]
-    // ["+seatArrangement.substring(42,44)+"] ["+seatArrangement.substring(44,46)+"]
-    // ["+seatArrangement.substring(46,48)+"]
-    // ["+seatArrangement.substring(48,50)+"]";
-    // movieSeats+="\n| | ["+seatArrangement.substring(50,52)+"]
-    // ["+seatArrangement.substring(52,54)+"] ["+seatArrangement.substring(54,56)+"]
-    // ["+seatArrangement.substring(56,58)+"]
-    // ["+seatArrangement.substring(58,60)+"]";
-    // movieSeats+="\n| | ["+seatArrangement.substring(60,62)+"]
-    // ["+seatArrangement.substring(62,64)+"] ["+seatArrangement.substring(64,66)+"]
-    // ["+seatArrangement.substring(66,68)+"]
-    // ["+seatArrangement.substring(68,70)+"]";
-    // movieSeats+="\n| | ["+seatArrangement.substring(70,72)+"]
-    // ["+seatArrangement.substring(72,74)+"] ["+seatArrangement.substring(74,76)+"]
-    // ["+seatArrangement.substring(76,78)+"]
-    // ["+seatArrangement.substring(78,80)+"]";
-    // movieSeats+="\n\nLegend: [**] Taken, [!!] Reserved\n";
-    // return movieSeats;
-    // }
     public void selectSeats(ReserveSeat display, String[] chosenSeats) {
         int availableSeats = getAvailableSeatsNum();
-        String[] seats = seatSample;
+        String[] sampleSeats = seatSample;
         for (int i = 0; i < chosenSeats.length; i++) {
             for (int j = 0; j < 40; j++) {
-                if (chosenSeats[i].equals(seats[j])) {
-                    seats[j] = "**";
+                if (chosenSeats[i].equals(sampleSeats[j])) {
+                    sampleSeats[j] = "**";
                     availableSeats--;
                 }
             }
         }
-        setSeats(display, seats);
+        setSeats(display, sampleSeats);
         setAvailableSeatsNum(availableSeats);
     }
 
-    public int getAvailableSeatsNum() {
-        return availableSeatsNum;
-    }
-
-    public void setAvailableSeatsNum(int availableSeatsNum) {
-        this.availableSeatsNum = availableSeatsNum;
+    public void removeSeats(ReserveSeat display, String movieSeats) {
+        String[] sampleSeats = seatSample;
+        String[] newSeats = { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5",
+                "C1", "C2", "C3", "C4", "C5", "D1", "D2", "D3", "D4", "D5",
+                "E1", "E2", "E3", "E4", "E5", "F1", "F2", "F3", "F4", "F5",
+                "G1", "G2", "G3", "G4", "G5", "H1", "H2", "H3", "H4", "H5" };
+        int seatAmount = 1, start = 0, end = 2, i, j;
+        for (i = 0; i < movieSeats.length(); i++) {
+            if (movieSeats.charAt(i) == ' ') {
+                seatAmount++;
+            }
+        }
+        for (i = 0; i < seatAmount; i++) {
+            for (j = 0; j < newSeats.length; j++) {
+                // System.out.print(sampleSeats[j]);
+                // System.out.println(movieSeats.substring(start,end));
+                if (newSeats[j].equals(movieSeats.substring(start, end))) {
+                    sampleSeats[j] = movieSeats.substring(start, end);
+                }
+            }
+            start += 4;
+            end += 4;
+        }
+        seats.put(display.id, List.of(sampleSeats));
     }
 
     @Override
     public String toString() {
         return "ID: " + id + ", DATE: " + date + ", CINEMA: " + cinemaNum + ", TIME: " + time + ", PREMIERE: "
-                + premiere + ", TITLE: " + movie + ", HOURS: " + movieLength + ", SEATS: " + getAvailableSeatsNum();
+                + premiere + ", TITLE: " + movie + ", HOURS: " + movieLength + ", SEATS: " + availableSeatsNum;
     }
 
     public void displayMovies() {
@@ -388,13 +371,14 @@ public class ReserveSeat {
                 display[k++] = movies[i];
             }
         }
-        System.out.println("----------------------------------------------------------------");
+        System.out.println("------------------------------------------------------------------------------------");
         for (i = 0; i < k; i++) {
-            System.out.println(
-                    "[" + (i + 1) + "] Cinema: " + display[i].getCinemaNum() + ", Date: " + display[i].getDate()
-                            + ", Time: " + display[i].getTime() + ", Movie Length: " + display[i].getMovieLength());
+            System.out.println("[" + (i + 1) + "] Cinema: " + display[i].getCinemaNum() + ", Date: "
+                    + display[i].getDate() + ", Time: " + display[i].getTime() + ", Movie Length: "
+                    + display[i].getMovieLength() + ", Seats: " + display[i].getAvailableSeatsNum());
         }
-        System.out.print("----------------------------------------------------------------\nChoose your schedule: ");
+        System.out.print(
+                "------------------------------------------------------------------------------------\nChoose your schedule: ");
 
         String choice = sc.nextLine();
         while (Integer.parseInt(choice) > k || Integer.parseInt(choice) < 1 || !choice.matches("-?\\d+(\\.\\d+)?")) {
@@ -482,16 +466,16 @@ public class ReserveSeat {
         // getSeatArrangement(display);
         System.out.println(getSeatArrangement(display));
         setTicketRefNum(display.id);
-        generatePrice(display, ticketSeats, chosenSeats);
+        checkout(display, ticketSeats, chosenSeats);
     }
 
-    public void generatePrice(ReserveSeat display, String ticketSeats, String[] chosenSeats) {
+    public void checkout(ReserveSeat display, String ticketSeats, String[] chosenSeats) {
         String confirm = "N";
         double price = 0;
         while (confirm.equals("N") && display.getShowing().equals("false")) {
             price = 0;
-            for (int i = 0; i < chosenSeats.length; i++) {
-                System.out.print("Is the person at seat " + chosenSeats[i] + " a senior citizen? [Y/N] ");
+            for (String chosenSeat : chosenSeats) {
+                System.out.print("Is the person at seat " + chosenSeat + " a senior citizen? [Y/N] ");
                 confirm = sc.next() + sc.nextLine();
                 while (!confirm.equals("Y") && !confirm.equals("N") || confirm.equals("Y") && confirm.equals("N")) {
                     System.out.print("Please choose between 'Y' or 'N': ");
@@ -511,15 +495,51 @@ public class ReserveSeat {
             }
         }
         if (display.getShowing().equals("true")) {
-            for (int i = 0; i < chosenSeats.length; i++) {
+            for (String chosenSeat : chosenSeats) {
                 price += 500;
             }
         }
         createTicketPaper(display.getCinemaNum(), display.getMovie(), display.getDate(), display.getTime(), chosenSeats,
                 getTicketRefNum(), price);
-        ticket.put(getTicketRefNum(), List.of(getTicketRefNum(), display.getDate(), display.getCinemaNum(),
+        reserve.put(getTicketRefNum(), List.of(getTicketRefNum(), display.getDate(), display.getCinemaNum(),
                 display.getTime(), ticketSeats, String.valueOf(price)));
+        tickets.add(getTicketRefNum());
         System.out.println(getTicketPaper());
         System.out.println("\nEnjoy your movie!");
+        cancelReservation();
+    }
+
+    public void cancelReservation() {
+        int i, j;
+        String confirm = "N", choice;
+        do {
+            System.out.println("Which ticket would you like to cancel?");
+            for (i = 0; i < tickets.size(); i++) {
+                System.out.println("[" + (i + 1) + "]" + reserve.get(tickets.get(i)));
+            }
+            System.out.print("Choice: ");
+            choice = sc.next() + sc.nextLine();
+            while (Integer.parseInt(choice) > tickets.size() || Integer.parseInt(choice) < 1
+                    || !choice.matches("-?\\d+(\\.\\d+)?")) {
+                System.out.print("Please choose within the tickets: ");
+                choice = sc.next() + sc.nextLine();
+            }
+            System.out.print("Your choice:\n" + choice + "\nConfirm? [Y/N] ");
+            confirm = sc.nextLine();
+            while (!confirm.equals("Y") && !confirm.equals("N") || confirm.equals("Y") && confirm.equals("N")) {
+                System.out.print("Please choose between 'Y' or 'N': ");
+                confirm = sc.next() + sc.nextLine();
+            }
+            if (confirm.equals("Y")) {
+                for (j = 0; j < movies.length; j++) {
+                    if (movies[j].getID().contains(
+                            String.valueOf(reserve.get(tickets.get(Integer.parseInt(choice) - 1))).substring(1, 13))) {
+                        removeSeats(movies[j], reserve.get(tickets.get(Integer.parseInt(choice) - 1)).get(4));
+                        tickets.remove(tickets.get(Integer.parseInt(choice) - 1));
+                        System.out.println(getSeatArrangement(movies[j]));
+                    }
+                }
+            }
+        } while (confirm.equals("N"));
     }
 }
