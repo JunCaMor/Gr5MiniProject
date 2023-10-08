@@ -544,6 +544,7 @@ public class ReserveSeat {
                                         .substring(1, 14) + " deleted");
                         tickets.remove(tickets.get(Integer.parseInt(choice) - 1));
                         System.out.println(getSeatArrangement(movies[j]));
+                        break;
                     }
                 }
             }
