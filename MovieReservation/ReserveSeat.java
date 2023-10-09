@@ -510,7 +510,6 @@ public class ReserveSeat {
         tickets.add(getTicketRefNum());
         System.out.println(getTicketPaper());
         System.out.println("\nEnjoy your movie!");
-        cancelReservation();
     }
 
     public void cancelReservation() {
