@@ -14,6 +14,7 @@ public class ReserveSeat {
     private String movieLength;
     private String ticketRefNum;
     private String ticketPaper;
+    private String ticketSeats;
     private int CSVSize;
     private String[] seatSample = { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5",
             "C1", "C2", "C3", "C4", "C5", "D1", "D2", "D3", "D4", "D5",
@@ -161,7 +162,12 @@ public class ReserveSeat {
         }
         return movieSeats;
     }
-
+    public String getTicketSeats(){
+        return ticketSeats;
+    }
+    public void setTicketSeats(String ticketSeats){
+        this.ticketSeats=ticketSeats;
+    }
     public int getAvailableSeatsNum() {
         return availableSeatsNum;
     }
@@ -483,6 +489,7 @@ public class ReserveSeat {
         // getSeatArrangement(display);
         System.out.println(getSeatArrangement(display));
         setTicketRefNum(display.id);
+        setTicketSeats(ticketSeats);
         checkout.checkout(display, ticketSeats, chosenSeats);
     }
 
