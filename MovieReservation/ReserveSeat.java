@@ -24,6 +24,7 @@ public class ReserveSeat {
     private HashMap<String, List<String>> reserve = new HashMap<>();
     private List<String> tickets = new ArrayList<>();
     private ReserveSeat[] movies;
+    private CheckoutPage checkout;
     private Scanner sc = new Scanner(System.in);
 
     // private Checkout checkout;
@@ -58,6 +59,18 @@ public class ReserveSeat {
         id += cinemaNum;
         // Key generator ends here
         seats.put(id, List.of(seatSample));
+    }
+    
+    public List<String> getTicketObject(){
+        return tickets;
+    }
+
+    public HashMap<String, List<String>> getSeatObject(){
+        return seats;
+    }
+
+    public HashMap<String, List<String>> getReserveObject(){
+        return reserve;
     }
 
     public ReserveSeat(int size) {
@@ -470,83 +483,84 @@ public class ReserveSeat {
         // getSeatArrangement(display);
         System.out.println(getSeatArrangement(display));
         setTicketRefNum(display.id);
-        checkout(display, ticketSeats, chosenSeats);
+        checkout.checkout(display, ticketSeats, chosenSeats);
     }
 
-    public void checkout(ReserveSeat display, String ticketSeats, String[] chosenSeats) {
-        String confirm = "N";
-        double price = 0;
-        while (confirm.equals("N") && display.getShowing().equals("false")) {
-            price = 0;
-            for (String chosenSeat : chosenSeats) {
-                System.out.print("Is the person at seat " + chosenSeat + " a senior citizen? [Y/N] ");
-                confirm = sc.next() + sc.nextLine();
-                while (!confirm.equals("Y") && !confirm.equals("N") || confirm.equals("Y") && confirm.equals("N")) {
-                    System.out.print("Please choose between 'Y' or 'N': ");
-                    confirm = sc.next() + sc.nextLine();
-                }
-                if (confirm.equals("Y")) {
-                    price += 280;
-                } else {
-                    price += 350;
-                }
-            }
-            System.out.print("Your total price is: PHP" + price + "\nConfirm? [Y/N] ");
-            confirm = sc.nextLine();
-            while (!confirm.equals("Y") && !confirm.equals("N") || confirm.equals("Y") && confirm.equals("N")) {
-                System.out.print("Please choose between 'Y' or 'N': ");
-                confirm = sc.next() + sc.nextLine();
-            }
-        }
-        if (display.getShowing().equals("true")) {
-            for (String chosenSeat : chosenSeats) {
-                price += 500;
-            }
-        }
-        createTicketPaper(display.getCinemaNum(), display.getMovie(), display.getDate(), display.getTime(), chosenSeats,
-                getTicketRefNum(), price);
-        reserve.put(getTicketRefNum(), List.of(getTicketRefNum(), display.getDate(), display.getCinemaNum(),
-                display.getTime(), ticketSeats, String.valueOf(price)));
-        tickets.add(getTicketRefNum());
-        System.out.println(getTicketPaper());
-        System.out.println("\nEnjoy your movie!");
-    }
+    // public void checkout(ReserveSeat display, String ticketSeats, String[] chosenSeats) {
+    //     String confirm = "N";
+    //     double price = 0;
+    //     while (confirm.equals("N") && display.getShowing().equals("false")) {
+    //         price = 0;
+    //         for (String chosenSeat : chosenSeats) {
+    //             System.out.print("Is the person at seat " + chosenSeat + " a senior citizen? [Y/N] ");
+    //             confirm = sc.next() + sc.nextLine();
+    //             while (!confirm.equals("Y") && !confirm.equals("N") || confirm.equals("Y") && confirm.equals("N")) {
+    //                 System.out.print("Please choose between 'Y' or 'N': ");
+    //                 confirm = sc.next() + sc.nextLine();
+    //             }
+    //             if (confirm.equals("Y")) {
+    //                 price += 280;
+    //             } else {
+    //                 price += 350;
+    //             }
+    //         }
+    //         System.out.print("Your total price is: PHP" + price + "\nConfirm? [Y/N] ");
+    //         confirm = sc.nextLine();
+    //         while (!confirm.equals("Y") && !confirm.equals("N") || confirm.equals("Y") && confirm.equals("N")) {
+    //             System.out.print("Please choose between 'Y' or 'N': ");
+    //             confirm = sc.next() + sc.nextLine();
+    //         }
+    //     }
+    //     if (display.getShowing().equals("true")) {
+    //         for (String chosenSeat : chosenSeats) {
+    //             price += 500;
+    //         }
+    //     }
+    //     createTicketPaper(display.getCinemaNum(), display.getMovie(), display.getDate(), display.getTime(), chosenSeats,
+    //             getTicketRefNum(), price);
+    //     reserve.put(getTicketRefNum(), List.of(getTicketRefNum(), display.getDate(), display.getCinemaNum(),
+    //             display.getTime(), ticketSeats, String.valueOf(price)));
+    //     tickets.add(getTicketRefNum());
+    //     System.out.println(getTicketPaper());
+    //     System.out.println("\nEnjoy your movie!");
+    //     cancelReservation();    
+    // }
 
-    public void cancelReservation() {
-        int i, j;
-        String confirm = "N", choice;
-        do {
-            System.out.println("Which ticket would you like to cancel?");
-            for (i = 0; i < tickets.size(); i++) {
-                System.out.println("[" + (i + 1) + "]" + reserve.get(tickets.get(i)));
-            }
-            System.out.print("Choice: ");
-            choice = sc.next() + sc.nextLine();
-            while (Integer.parseInt(choice) > tickets.size() || Integer.parseInt(choice) < 1
-                    || !choice.matches("-?\\d+(\\.\\d+)?")) {
-                System.out.print("Please choose within the tickets: ");
-                choice = sc.next() + sc.nextLine();
-            }
-            System.out.print("Your choice:\n" + choice + "\nConfirm? [Y/N] ");
-            confirm = sc.nextLine();
-            while (!confirm.equals("Y") && !confirm.equals("N") || confirm.equals("Y") && confirm.equals("N")) {
-                System.out.print("Please choose between 'Y' or 'N': ");
-                confirm = sc.next() + sc.nextLine();
-            }
-            if (confirm.equals("Y")) {
-                for (j = 0; j < movies.length; j++) {
-                    if (movies[j].getID().contains(
-                            String.valueOf(reserve.get(tickets.get(Integer.parseInt(choice) - 1))).substring(1, 13))) {
-                        removeSeats(movies[j], reserve.get(tickets.get(Integer.parseInt(choice) - 1)).get(4));
-                        System.out.println(
-                                "\nTicket " + String.valueOf(reserve.get(tickets.get(Integer.parseInt(choice) - 1)))
-                                        .substring(1, 14) + " deleted");
-                        tickets.remove(tickets.get(Integer.parseInt(choice) - 1));
-                        System.out.println(getSeatArrangement(movies[j]));
-                        break;
-                    }
-                }
-            }
-        } while (confirm.equals("N"));
-    }
+    // public void cancelReservation() {
+    //     int i, j;
+    //     String confirm = "N", choice;
+    //     do {
+    //         System.out.println("Which ticket would you like to cancel?");
+    //         for (i = 0; i < tickets.size(); i++) {
+    //             System.out.println("[" + (i + 1) + "]" + reserve.get(tickets.get(i)));
+    //         }
+    //         System.out.print("Choice: ");
+    //         choice = sc.next() + sc.nextLine();
+    //         while (Integer.parseInt(choice) > tickets.size() || Integer.parseInt(choice) < 1
+    //                 || !choice.matches("-?\\d+(\\.\\d+)?")) {
+    //             System.out.print("Please choose within the tickets: ");
+    //             choice = sc.next() + sc.nextLine();
+    //         }
+    //         System.out.print("Your choice:\n" + choice + "\nConfirm? [Y/N] ");
+    //         confirm = sc.nextLine();
+    //         while (!confirm.equals("Y") && !confirm.equals("N") || confirm.equals("Y") && confirm.equals("N")) {
+    //             System.out.print("Please choose between 'Y' or 'N': ");
+    //             confirm = sc.next() + sc.nextLine();
+    //         }
+    //         if (confirm.equals("Y")) {
+    //             for (j = 0; j < movies.length; j++) {
+    //                 if (movies[j].getID().contains(
+    //                         String.valueOf(reserve.get(tickets.get(Integer.parseInt(choice) - 1))).substring(1, 13))) {
+    //                     removeSeats(movies[j], reserve.get(tickets.get(Integer.parseInt(choice) - 1)).get(4));
+    //                     System.out.println(
+    //                             "\nTicket " + String.valueOf(reserve.get(tickets.get(Integer.parseInt(choice) - 1)))
+    //                                     .substring(1, 14) + " deleted");
+    //                     tickets.remove(tickets.get(Integer.parseInt(choice) - 1));
+    //                     System.out.println(getSeatArrangement(movies[j]));
+    //                     break;
+    //                 }
+    //             }
+    //         }
+    //     } while (confirm.equals("N"));
+    // }
 }
