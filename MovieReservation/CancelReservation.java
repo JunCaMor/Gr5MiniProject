@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CancelReservation {
+    private ReserveSeat reserveSeat;
 
     public void cancel() throws ParseException {
         boolean response = true;
@@ -88,6 +89,9 @@ public class CancelReservation {
                                     bw.write(updatedLine);
                                     bw.newLine();
                                 }
+
+                                reserveSeat.getTicketObject().remove(reservationID);
+                                
                                 bw.close();
 
                                 System.out.println("\nReservation canceled.");
