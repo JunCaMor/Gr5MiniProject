@@ -1,3 +1,4 @@
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,7 +26,7 @@ public class ReserveSeat {
     private HashMap<String, List<String>> reserve = new HashMap<>();
     private List<String> tickets = new ArrayList<>();
     private ReserveSeat[] movies;
-    private CheckoutPage checkout;
+    //private CheckoutPage checkout;
     private Scanner sc = new Scanner(System.in);
 
     // private Checkout checkout;
@@ -303,7 +304,7 @@ public class ReserveSeat {
         String temp = "";
         int i;
         ticketPaper += "+--------------------------------------------------+";// 51
-        ticketPaper += "\n|Cinema " + cinemaNum + "\t\t\t\t\t  |";
+        ticketPaper += "\n|Cinema " + cinemaNum + "\t\t\t\t\t   |";
         ticketPaper += "\n|" + movie;
         for (i = 0; i < 50 - movie.length(); i++) {
             ticketPaper += " ";
@@ -360,7 +361,7 @@ public class ReserveSeat {
         for (i = 0; i < 50 - temp.length(); i++) {
             ticketPaper += " ";
         }
-        ticketPaper += "|\n|\t\t\t\t\t\t  |\n|";
+        ticketPaper += "|\n|\t\t\t\t\t\t   |\n|";
         temp = ticketID + "                PHP " + String.valueOf(price);
         ticketPaper += temp;
         for (i = 0; i < 50 - temp.length(); i++) {
@@ -490,48 +491,56 @@ public class ReserveSeat {
         System.out.println(getSeatArrangement(display));
         setTicketRefNum(display.id);
         setTicketSeats(ticketSeats);
-        checkout.checkout(display, ticketSeats, chosenSeats);
+        checkout(display, ticketSeats, chosenSeats);
     }
 
-    // public void checkout(ReserveSeat display, String ticketSeats, String[] chosenSeats) {
-    //     String confirm = "N";
-    //     double price = 0;
-    //     while (confirm.equals("N") && display.getShowing().equals("false")) {
-    //         price = 0;
-    //         for (String chosenSeat : chosenSeats) {
-    //             System.out.print("Is the person at seat " + chosenSeat + " a senior citizen? [Y/N] ");
-    //             confirm = sc.next() + sc.nextLine();
-    //             while (!confirm.equals("Y") && !confirm.equals("N") || confirm.equals("Y") && confirm.equals("N")) {
-    //                 System.out.print("Please choose between 'Y' or 'N': ");
-    //                 confirm = sc.next() + sc.nextLine();
-    //             }
-    //             if (confirm.equals("Y")) {
-    //                 price += 280;
-    //             } else {
-    //                 price += 350;
-    //             }
-    //         }
-    //         System.out.print("Your total price is: PHP" + price + "\nConfirm? [Y/N] ");
-    //         confirm = sc.nextLine();
-    //         while (!confirm.equals("Y") && !confirm.equals("N") || confirm.equals("Y") && confirm.equals("N")) {
-    //             System.out.print("Please choose between 'Y' or 'N': ");
-    //             confirm = sc.next() + sc.nextLine();
-    //         }
-    //     }
-    //     if (display.getShowing().equals("true")) {
-    //         for (String chosenSeat : chosenSeats) {
-    //             price += 500;
-    //         }
-    //     }
-    //     createTicketPaper(display.getCinemaNum(), display.getMovie(), display.getDate(), display.getTime(), chosenSeats,
-    //             getTicketRefNum(), price);
-    //     reserve.put(getTicketRefNum(), List.of(getTicketRefNum(), display.getDate(), display.getCinemaNum(),
-    //             display.getTime(), ticketSeats, String.valueOf(price)));
-    //     tickets.add(getTicketRefNum());
-    //     System.out.println(getTicketPaper());
-    //     System.out.println("\nEnjoy your movie!");
-    //     cancelReservation();    
-    // }
+    public void checkout(ReserveSeat display, String ticketSeats, String[] chosenSeats) {
+        String confirm = "N";
+        double price = 0;
+        while (confirm.equals("N") && display.getShowing().equals("false")) {
+            price = 0;
+            for (String chosenSeat : chosenSeats) {
+                System.out.print("Is the person at seat " + chosenSeat + " a senior citizen? [Y/N] ");
+                confirm = sc.next() + sc.nextLine();
+                while (!confirm.equals("Y") && !confirm.equals("N") || confirm.equals("Y") && confirm.equals("N")) {
+                    System.out.print("Please choose between 'Y' or 'N': ");
+                    confirm = sc.next() + sc.nextLine();
+                }
+                if (confirm.equals("Y")) {
+                    price += 280;
+                } else {
+                    price += 350;
+                }
+            }
+            System.out.print("Your total price is: PHP" + price + "\nConfirm? [Y/N] ");
+            confirm = sc.nextLine();
+            while (!confirm.equals("Y") && !confirm.equals("N") || confirm.equals("Y") && confirm.equals("N")) {
+                System.out.print("Please choose between 'Y' or 'N': ");
+                confirm = sc.next() + sc.nextLine();
+            }
+        }
+        if (display.getShowing().equals("true")) {
+            for (String chosenSeat : chosenSeats) {
+                price += 500;
+            }
+        }
+        createTicketPaper(display.getCinemaNum(), display.getMovie(), display.getDate(), display.getTime(), chosenSeats,
+                getTicketRefNum(), price);
+        reserve.put(getTicketRefNum(), List.of(getTicketRefNum(), display.getDate(), display.getCinemaNum(),
+                display.getTime(), ticketSeats, String.valueOf(price)));
+        tickets.add(getTicketRefNum());
+        System.out.println(getTicketPaper());
+        System.out.println("\nEnjoy your movie!");
+        System.out.print("Would you like to make another reservation? [Y/N] ");
+        Menu menu = new Menu();
+		try {
+            menu.startMenu();
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+}
 
     // public void cancelReservation() {
     //     int i, j;
@@ -570,4 +579,3 @@ public class ReserveSeat {
     //         }
     //     } while (confirm.equals("N"));
     // }
-}
