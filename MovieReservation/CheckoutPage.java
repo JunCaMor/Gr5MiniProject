@@ -1,62 +1,103 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class CheckoutPage {
 
+    public ReserveSeat reserveSeat;
 
-    public static void checkout(){
-
-        Scanner scan = new Scanner(System.in);
-
-        System.out.println();
-
-        //Display movie, Date, Screening time, Number of seats,  Seat number, Total price
-        String file ="Reservations.csv";
-        BufferedReader reader=null;
-        String line="";
+    public void checkout(ReserveSeat display, String ticketSeats, String[] chosenSeats) {
+        try {
+            File csvFile = new File("Reservation.csv");
+            if (csvFile.isFile()){
+            BufferedReader csvReader = new BufferedReader(new FileReader("Reservations.csv"));
+            String row;
+            while ((row = csvReader.readLine()) != null){
+                String[] data = row.split(",");
+            }
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
 
         try {
-            reader= new BufferedReader(new FileReader(file));
-            while ((line=reader.readLine())!= null){
-                String[] row= line.split(",");
+            FileWriter csvWriter = new FileWriter("new.csv");
+            csvWriter.append(valueOf(getTicketRefNum()));
+            csvWriter.append(",");
+            csvWriter.append(display.getDate());
+            csvWriter.append(",");
+            csvWriter.append(valueof(display.getCinemaNum()));
+            csvWriter.append(",");
+            csvWriter.append(display.getTime());
+            csvWriter.append(",");
+            csvWriter.append();
 
-                for (String index: row){
-                    System.out.printf(index);
-                }
-                System.out.println();
-            }
-        }
-        catch(Exception e){
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        finally{ 
-            try {
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+
+
+        Scanner sc = new Scanner(System.in);
+        String confirm = "N";
+        double price = 0;
+        while (confirm.equals("N") && display.getShowing().equals("false")) {
+            price = 0;
+            for (String chosenSeat : chosenSeats) {
+                System.out.print("Is the person at seat " + chosenSeat + " a senior citizen? [Y/N] ");
+                confirm = sc.next() + sc.nextLine();
+                while (!confirm.equals("Y") && !confirm.equals("N") || confirm.equals("Y") && confirm.equals("N")) {
+                    System.out.print("Please choose between 'Y' or 'N': ");
+                    confirm = sc.next() + sc.nextLine();
+                }
+                if (confirm.equals("Y")) {
+                    price += 280;
+                } else {
+                    price += 350;
+                }
+            }
+            System.out.print("Your total price is: PHP" + price + "\nConfirm? [Y/N] ");
+            confirm = sc.nextLine();
+            while (!confirm.equals("Y") && !confirm.equals("N") || confirm.equals("Y") && confirm.equals("N")) {
+                System.out.print("Please choose between 'Y' or 'N': ");
+                confirm = sc.next() + sc.nextLine();
             }
         }
-
-        // Calculate Total Price
-        // is movie premiere screening
-        // if premiere, then total price = no.of seats * 500
-        // else, then total price= (no. of seats * 350) + (no. of senior seats * 280)
-
-
-        System.out.println("Do you want to proceed with the reservation? y/n");
-        String proceed = scan.nextLine();
-
-        if (proceed == "y"){
-            //Display reservation ID
-        }else if (proceed =="no"){ 
-            //return to main page
+        if (display.getShowing().equals("true")) {
+            for (String chosenSeat : chosenSeats) {
+                price += 500;
+            }
         }
-        else{
-            System.out.println("Please enter only y or n . ");
-        }
+        reserveSeat.createTicketPaper(display.getCinemaNum(), display.getMovie(), display.getDate(), display.getTime(), chosenSeats,
+                getTicketRefNum(), price);
+        reserveSeat.getReserveObject().put(getTicketRefNum(), List.of(getTicketRefNum(), display.getDate(), display.getCinemaNum(),
+                display.getTime(), ticketSeats, String.valueOf(price)));
+        reserveSeat.getTicketObject().add(getTicketRefNum());
+        System.out.println(getTicketPaper());
+        System.out.println("\nEnjoy your movie!");
 
-        scan.close();
+        sc.close();
+    }
+
+    private CharSequence valueof(String cinemaNum) {
+        return null;
+    }
+
+    private CharSequence valueOf(String string) {
+        return null;
+    }
+
+    private String[] getTicketPaper() {
+        return getTicketPaper();
+    }
+
+    private String getTicketRefNum() {
+        return this.getTicketRefNum();
     }
 }
