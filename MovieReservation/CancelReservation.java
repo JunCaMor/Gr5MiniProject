@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CancelReservation {
-    private ReserveSeat reserveSeat;
 
     public void cancel() throws ParseException {
         boolean response = true;
@@ -20,7 +19,7 @@ public class CancelReservation {
         boolean another = false;
 
         try (Scanner input = new Scanner(System.in)) {
-            System.out.println("\n\t\tCancel Reservation");
+            System.out.println("\n\tCancel Reservation");
             while (response) {
                 try {
 
@@ -38,8 +37,9 @@ public class CancelReservation {
                             String[] parts = line.split("\",\"");
                             if (parts.length > 0 && parts[0].equals("\"" + reservationID + "")) {
                                 idFound = true; // Mark ID as found
-                                System.out.println("____________________________________________________________");
-                                System.out.println("\nCinema " + parts[2].replace("\"", ""));
+                                System.out.println("+--------------------------------------------------+");
+                                System.out.println("Cinema " + parts[2].replace("\"", ""));
+                                //System.out.println(parts[6].replace("\"", ""));
 
                                 // Indexes will be updated based on final format of Reservations.csv
 
@@ -58,13 +58,13 @@ public class CancelReservation {
 
                                 String formattedDate = outputDateFormat.format(date);
 
-                                System.out.println(formattedDate);// Print the formatted date
-                                System.out.println(parts[0].replace("\"", "") + ", @" + parts[3].replace("\"", ""));
+                                System.out.println(formattedDate + ", @" + parts[3].replace("\"", ""));
+                                //System.out.println(parts[0].replace("\"", "") + ", @" + parts[3].replace("\"", ""));
                                 System.out.println(parts[4].replace("\"", ""));
                                 System.out.println("\nRef no.: " + parts[0].replace("\"", "") + "\t\tPHP "
                                         + parts[5].replace("\"", ""));
-                                System.out.println("____________________________________________________________");
-
+                                System.out.println("+--------------------------------------------------+");
+                                
                                 continue; // Skip this line, as it matches the reservationID
 
                             }
@@ -93,8 +93,10 @@ public class CancelReservation {
                                 bw.close();
 
                                 System.out.println("\nReservation canceled.");
-                            } else {
+                            } else if (confirm.equalsIgnoreCase("n")) {
                                 System.out.println("\nYou have not cancelled any reservation.");
+                            } else {
+                                System.out.println("\nPlease enter a valid response.");
                             }
                             another = true;
                         } else {
