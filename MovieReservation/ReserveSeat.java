@@ -26,8 +26,6 @@ public class ReserveSeat {
             "G1", "G2", "G3", "G4", "G5", "H1", "H2", "H3", "H4", "H5" };
     private ReserveSeat[] movies;
     private HashMap<String, List<String>> seats = new HashMap<>();
-    // private HashMap<String,List<String>> reserve=new HashMap<>();
-    // private List<String> tickets=new ArrayList<>();
     private Scanner sc = new Scanner(System.in);
 
     public ReserveSeat(String date, String cinemaNum, String time, String premiere, String title, String movieLength) {
@@ -181,7 +179,7 @@ public class ReserveSeat {
         movieTicketsNum = 0;
         try {
             BufferedReader read = new BufferedReader(new FileReader(
-                    "C:\\Users\\Junra\\Documents\\NetBeansProjects\\MovieReservation\\src\\main\\java\\com\\mycompany\\moviereservation\\Reservations.csv"));
+                    "Reservations.csv"));
             String str;
             tickets = 0;
             while ((str = read.readLine()) != null) {
@@ -194,11 +192,10 @@ public class ReserveSeat {
                     }
                 }
             }
-            // System.out.println(movieTicketsNum);
             movie.setMovieTicketsNum(movieTicketsNum);
             read.close();
             BufferedReader read2 = new BufferedReader(new FileReader(
-                    "C:\\Users\\Junra\\Documents\\NetBeansProjects\\MovieReservation\\src\\main\\java\\com\\mycompany\\moviereservation\\Reservations.csv"));
+                    "Reservations.csv"));
             ticketID = new String[movieTicketsNum];
             while ((str = read2.readLine()) != null) {
                 String[] data = str.split("\",\"");
@@ -228,7 +225,6 @@ public class ReserveSeat {
                 }
             }
             movie.setSeatsNum(movieSeats);
-            // System.out.println("MS: "+movieSeats);
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());
         } catch (IOException e) {
@@ -236,7 +232,6 @@ public class ReserveSeat {
         } catch (Exception e) { // Deny out of bounds error
         }
         seats.put(movie.getID(), List.of(selectSeats));
-        // getSeats(movie.getID());
     }
 
     public List<String> getSeats(String id) {
@@ -453,7 +448,6 @@ public class ReserveSeat {
         String confirm = "N";
         String ticketSeats = "";
         int instanceChecker = 0, i, j;
-        // setSeats(movie);
         while (confirm.equals("N")) {
             System.out.print("\nCinema: " + movie.getCinemaNum() + ", Date: " + movie.getDate() + ", Time: "
                     + movie.getTime() + ", Movie Length: " + movie.getMovieLength()
@@ -529,9 +523,6 @@ public class ReserveSeat {
                 confirm = sc.next() + sc.nextLine();
             }
             if (confirm.equals("Y")) {
-                // System.out.println(movie.getID()+String.valueOf(getTickets())+"
-                // "+movie.getTitle()+" "+movie.getDate()+" "+movie.getCinemaNum()+"
-                // "+movie.getTime()+" "+ticketSeats+" "+movie.getPremiere());
                 Checkout checkout = new Checkout(movie.getID() + String.valueOf(getTickets()), movie.getTitle(),
                         movie.getDate(), movie.getCinemaNum(), movie.getTime(), ticketSeats, movie.getPremiere());
                 checkout.generatePrice();
