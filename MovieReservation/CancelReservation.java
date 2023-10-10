@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CancelReservation {
-    // private ReserveSeat reserveSeat;
 
     public void cancel() throws ParseException {
         boolean response = true;
@@ -40,8 +39,7 @@ public class CancelReservation {
                                 idFound = true; // Mark ID as found
                                 System.out.println("+--------------------------------------------------+");
                                 System.out.println("\nCinema " + parts[2].replace("\"", ""));
-                                System.out.println(parts[6].replace("\"", ""));
-
+                                
                                 // Indexes will be updated based on final format of Reservations.csv
 
                                 String inputDateStr = parts[1].replace("\"", ""); // Change index based on location of
