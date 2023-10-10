@@ -35,8 +35,8 @@ public class CancelReservation {
                         String line;
 
                         while ((line = br.readLine()) != null) {
-                            String[] parts = line.split(",");
-                            if (parts.length > 0 && parts[0].equals("\"" + reservationID + "\"")) {
+                            String[] parts = line.split("\",\"");
+                            if (parts.length > 0 && parts[0].equals("\"" + reservationID + "")) {
                                 idFound = true; // Mark ID as found
                                 System.out.println("____________________________________________________________");
                                 System.out.println("\nCinema " + parts[2].replace("\"", ""));
@@ -89,8 +89,6 @@ public class CancelReservation {
                                     bw.write(updatedLine);
                                     bw.newLine();
                                 }
-
-                                reserveSeat.getTicketObject().remove(reservationID);
                                 
                                 bw.close();
 

@@ -178,21 +178,21 @@ public class Checkout {
             }
         }
         else{
-            System.out.print("How many are senior citizens or PWDs? [1-"+seatAmount+"] ");
+            System.out.print("How many are senior citizens or PWDs? [0-"+seatAmount+"] ");
             String choice = sc.nextLine();
-            while (!choice.matches("-?\\d+(\\.\\d+)?")||Integer.parseInt(choice) > seatAmount || Integer.parseInt(choice) < 1 ) {
-                System.out.print("Please choose within 1 to "+seatAmount+": ");
+            while (!choice.matches("-?\\d+(\\.\\d+)?")||Integer.parseInt(choice) > seatAmount || Integer.parseInt(choice) < 0 ) {
+                System.out.print("Please choose within 0 to "+seatAmount+": ");
                 choice = sc.next()+sc.nextLine();
             }
             int x; // This is for trapping the excess input bug
             for(x=0; x<Integer.parseInt(choice); x++){
                 total+=245;
             }
-            for(j=i; i<seatAmount; j++){
+            for(j=0; j<seatAmount-Integer.parseInt(choice); j++){
                 total+=350;
             }
         }
-        setPrice(total);
+        price=total;
         createTicketPaper(cinemaNum,title,date,time,seatsTaken,ticketID,total);
         System.out.println(getTicketPaper()+"\nEnjoy your movie!");
         reserveTicket(ticketID,date,cinemaNum,time,seats,String.valueOf(getPrice()));
