@@ -150,7 +150,7 @@ public class ReserveSeat {
         String[] seatArray=new String[40];
         int i=0, j=0, ticketSeatsNum=0, movieTicketsNum=0, start=0, end=2;
         try{
-            BufferedReader read = new BufferedReader(new FileReader("C:\\Users\\Junra\\Documents\\NetBeansProjects\\MovieReservation\\src\\main\\java\\com\\mycompany\\moviereservation\\Reservations.csv"));
+            BufferedReader read = new BufferedReader(new FileReader("Reservations.csv"));
             String str;
             tickets=0;
             while((str=read.readLine())!=null){
@@ -164,7 +164,7 @@ public class ReserveSeat {
                 }
             }
             read.close();
-            BufferedReader read2=new BufferedReader(new FileReader("C:\\Users\\Junra\\Documents\\NetBeansProjects\\MovieReservation\\src\\main\\java\\com\\mycompany\\moviereservation\\Reservations.csv"));
+            BufferedReader read2=new BufferedReader(new FileReader("Reservations.csv"));
             ticketID=new String[movieTicketsNum];
             while((str=read2.readLine())!=null){
                 String[] data=str.split("\",\"");
