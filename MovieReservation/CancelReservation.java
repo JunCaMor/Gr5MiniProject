@@ -34,12 +34,13 @@ public class CancelReservation {
                         String line;
 
                         while ((line = br.readLine()) != null) {
-                            String[] parts = line.split(",");
-                            if (parts.length > 0 && parts[0].equals("\"" + reservationID + "\"")) {
+                            String[] parts = line.split("\",\"");
+                            if (parts.length > 0 && parts[0].equals("\"" + reservationID + "")) {
                                 idFound = true; // Mark ID as found
                                 System.out.println("+--------------------------------------------------+");
-                                System.out.println("\nCinema " + parts[2].replace("\"", ""));
-                                
+                                System.out.println("Cinema " + parts[2].replace("\"", ""));
+                                //System.out.println(parts[6].replace("\"", ""));
+
                                 // Indexes will be updated based on final format of Reservations.csv
 
                                 String inputDateStr = parts[1].replace("\"", ""); // Change index based on location of
@@ -57,13 +58,13 @@ public class CancelReservation {
 
                                 String formattedDate = outputDateFormat.format(date);
 
-                                // System.out.println(formattedDate);// Print the formatted date
                                 System.out.println(formattedDate + ", @" + parts[3].replace("\"", ""));
+                                //System.out.println(parts[0].replace("\"", "") + ", @" + parts[3].replace("\"", ""));
                                 System.out.println(parts[4].replace("\"", ""));
                                 System.out.println("\nRef no.: " + parts[0].replace("\"", "") + "\t\tPHP "
                                         + parts[5].replace("\"", ""));
                                 System.out.println("+--------------------------------------------------+");
-
+                                
                                 continue; // Skip this line, as it matches the reservationID
 
                             }
@@ -88,8 +89,7 @@ public class CancelReservation {
                                     bw.write(updatedLine);
                                     bw.newLine();
                                 }
-                                // reserveSeat.getTicketObject().remove(reservationID);
-
+                                
                                 bw.close();
 
                                 System.out.println("\nReservation canceled.");
@@ -125,6 +125,8 @@ public class CancelReservation {
                         } else if (anotherReservation.equalsIgnoreCase("n")) {
                             response = false;
                             notValid = false;
+                            Menu menu = new Menu();
+		                    menu.startMenu();
                         } else {
                             System.out.println("You have entered an invalid input.");
                         }
