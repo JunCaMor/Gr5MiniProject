@@ -82,21 +82,26 @@ public class CancelReservation {
                         if (idFound) {
                             System.out.print("\nDo you want to cancel this reservation? [Y/N]: ");
                             String confirm = input.nextLine();
-                            if (confirm.equalsIgnoreCase("y")) {
-                                // Write back to the CSV file without the matching reservationID
-                                BufferedWriter bw = new BufferedWriter(new FileWriter("Reservations.csv"));
-                                for (String updatedLine : lines) {
-                                    bw.write(updatedLine);
-                                    bw.newLine();
-                                }
-                                
-                                bw.close();
+                            while(!confirm.equalsIgnoreCase("y") || !confirm.equalsIgnoreCase("n")){
+                                if (confirm.equalsIgnoreCase("y")) {
+                                    // Write back to the CSV file without the matching reservationID
+                                    BufferedWriter bw = new BufferedWriter(new FileWriter("Reservations.csv"));
+                                    for (String updatedLine : lines) {
+                                        bw.write(updatedLine);
+                                        bw.newLine();
+                                    }
+                                    
+                                    bw.close();
 
-                                System.out.println("\nReservation canceled.");
-                            } else if (confirm.equalsIgnoreCase("n")) {
-                                System.out.println("\nYou have not cancelled any reservation.");
-                            } else {
-                                System.out.println("\nPlease enter a valid response.");
+                                    System.out.println("\nReservation canceled.");
+                                    break;
+                                } else if (confirm.equalsIgnoreCase("n")) {
+                                    System.out.println("\nYou have not cancelled any reservation.");
+                                    break;
+                                } else {
+                                    System.out.println("\nPlease choose between 'Y' or 'N': ");
+                                    confirm = input.nextLine();
+                                }
                             }
                             another = true;
                         } else {
