@@ -123,6 +123,8 @@ public class CancelReservation {
                         } else if (anotherReservation.equalsIgnoreCase("n")) {
                             response = false;
                             notValid = false;
+                            Menu menu = new Menu();
+		                    menu.startMenu();
                         } else {
                             System.out.println("You have entered an invalid input.");
                         }
