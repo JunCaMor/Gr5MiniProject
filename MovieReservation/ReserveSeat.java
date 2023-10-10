@@ -427,10 +427,22 @@ public class ReserveSeat {
                 confirm = sc.next() + sc.nextLine();
             }
             if (confirm.equals("Y")) {
-                System.out.println(movie.getID()+String.valueOf(getTickets())+" "+movie.getTitle()+" "+movie.getDate()+" "+movie.getCinemaNum()+" "+movie.getTime()+" "+ticketSeats+" "+movie.getPremiere());
+               // System.out.println(movie.getID()+String.valueOf(getTickets())+" "+movie.getTitle()+" "+movie.getDate()+" "+movie.getCinemaNum()+" "+movie.getTime()+" "+ticketSeats+" "+movie.getPremiere());
                 Checkout checkout=new Checkout(movie.getID()+String.valueOf(getTickets()),movie.getTitle(),movie.getDate(),movie.getCinemaNum(),movie.getTime(),ticketSeats, movie.getPremiere());
                 checkout.generatePrice();
             }
+        }
+        System.out.println("Would you like to do another transaction? [Y/N] ");
+        confirm = sc.nextLine();
+        while (!confirm.equals("Y") && !confirm.equals("N") || confirm.equals("Y") && confirm.equals("N")) {
+            System.out.print("Please choose between 'Y' or 'N': ");
+            confirm = sc.next() + sc.nextLine();
+        }
+        if (confirm.equals("Y")) {
+            displayMovies();
+        }else{
+            Menu menu = new Menu();
+            menu.startMenu();
         }
     }
 }
