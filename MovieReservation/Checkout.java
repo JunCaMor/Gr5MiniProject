@@ -198,9 +198,9 @@ public class Checkout {
         reserveTicket(ticketID,date,cinemaNum,time,seats,String.valueOf(getPrice()));
     }
     public void reserveTicket(String ticketID, String date, String cinemaNum, String time, String seats, String price){
-        String ticket="\""+ticketID+"\",\""+date+"\",\""+cinemaNum+"\",\""+time+"\",\""+seats+"\",\""+price+"\"";
+        String ticket="\""+ticketID+"\",\""+date+"\",\""+cinemaNum+"\",\""+time+"\",\""+seats+"\",\""+price+"\"\n";
         try{
-            BufferedWriter write = new BufferedWriter(new FileWriter("Reservations.csv"));
+            BufferedWriter write = new BufferedWriter(new FileWriter("Reservations.csv",true));
             write.write(ticket)
 ;
             write.close();
