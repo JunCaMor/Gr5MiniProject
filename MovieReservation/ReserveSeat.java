@@ -19,6 +19,7 @@ public class ReserveSeat {
     private String premiere;
     private String title;
     private String movieLength;
+    private String ticketID;
     private String ticketPaper;
     private String[] seatSample = { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5",
             "C1", "C2", "C3", "C4", "C5", "D1", "D2", "D3", "D4", "D5",
@@ -192,6 +193,9 @@ public class ReserveSeat {
                     }
                 }
             }
+            while (tickets <= movieTicketsNum) {
+                tickets++;
+            }
             movie.setMovieTicketsNum(movieTicketsNum);
             read.close();
             BufferedReader read2 = new BufferedReader(new FileReader(
@@ -243,88 +247,6 @@ public class ReserveSeat {
         return "ID: " + id + ", DATE: " + date + ", CINEMA: " + cinemaNum + ", TIME: " + time + ", PREMIERE: "
                 + premiere + ", TITLE: " + title + ", HOURS: " + movieLength + ", SEATS: "
                 + (seatsNum - movieTicketsNum);
-    }
-
-    public void createTicketPaper(String cinemaNum, String movie, String date, String time, String[] chosenSeats,
-            String ticketID, double price) {
-        ticketPaper = "";
-        String temp = "";
-        int i;
-        ticketPaper += "+--------------------------------------------------+\n";// 51
-        temp = "|Cinema " + cinemaNum;
-        for (i = 0; i < 41; i++) {
-            temp += " ";
-        }
-        ticketPaper += temp;
-        ticketPaper += "\n|" + movie;
-        for (i = 0; i < 50 - movie.length(); i++) {
-            ticketPaper += " ";
-        }
-        ticketPaper += "|\n|";
-        temp += date.substring(8, 10) + " ";
-        temp += date.substring(5, 7).equals("01") ? "January"
-                : date.substring(5, 7).equals("02") ? "February"
-                        : date.substring(5, 7).equals("03") ? "March"
-                                : date.substring(5, 7).equals("04") ? "April"
-                                        : date.substring(5, 7).equals("05") ? "May"
-                                                : date.substring(5, 7).equals("06") ? "June"
-                                                        : date.substring(5, 7).equals("07") ? "July"
-                                                                : date.substring(5, 7).equals("08") ? "August"
-                                                                        : date.substring(5, 7).equals("09")
-                                                                                ? "September"
-                                                                                : date.substring(5, 7).equals("10")
-                                                                                        ? "October"
-                                                                                        : date.substring(5, 7).equals(
-                                                                                                "11") ? "November"
-                                                                                                        : "December";
-        temp += " " + date.substring(0, 4) + " @ ";
-        temp += time.substring(0,
-                2).equals(
-                        "08") ? "8:" + time.substring(3, 5) + " AM"
-                                : time.substring(0,
-                                        2).equals(
-                                                "09") ? "9:" + time.substring(3, 5) + " AM"
-                                                        : time.substring(0, 2)
-                                                                .equals("10")
-                                                                        ? "10:" + time.substring(3, 5) + " AM"
-                                                                        : time.substring(0,
-                                                                                2).equals(
-                                                                                        "11") ? "11:" + time.substring(3, 5) + " AM" : time.substring(0, 2).equals("12") ? "12:" + time.substring(3, 5) + " NN" : time.substring(0, 2).equals("13") ? "1:" + time.substring(3, 5) + " PM" : time.substring(0, 2).equals("14") ? "2:" + time.substring(3, 5) + " PM" : time.substring(0, 2).equals("15") ? "3:" + time.substring(3, 5) + " PM" : time.substring(0, 2).equals("16") ? "4:" + time.substring(3, 5) + " PM" : time.substring(0, 2).equals("17") ? "5:" + time.substring(3, 5) + " PM" : time.substring(0, 2).equals("18") ? "6:" + time.substring(3, 5) + " PM" : time.substring(0, 2).equals("19") ? "7:" + time.substring(3, 5) + " PM" : "8:" + time.substring(3, 5) + " PM";
-        ticketPaper += temp;
-        for (i = 0; i < 50 - temp.length(); i++) {
-            ticketPaper += " ";
-        }
-        ticketPaper += "|\n|";
-        temp = "[";
-        int hideOtherSeats = chosenSeats.length;
-        if (hideOtherSeats > 9)
-            hideOtherSeats = 9;
-        for (i = 0; i < hideOtherSeats; i++) {
-            temp += chosenSeats[i] + "] ";
-            if (i < chosenSeats.length - 1) {
-                temp += "[";
-            }
-        }
-        if (chosenSeats.length > 9) {
-            temp += "...";
-        }
-        ticketPaper += temp;
-        for (i = 0; i < 50 - temp.length(); i++) {
-            ticketPaper += " ";
-        }
-        ticketPaper += "\n|";
-        for (i = 0; i < 50; i++) {
-            ticketPaper += " ";
-        }
-        ticketPaper += "|\n";
-        temp = ticketID + "                PHP " + String.valueOf(price);
-        ticketPaper += temp;
-        for (i = 0; i < 50 - temp.length(); i++) {
-            ticketPaper += " ";
-        }
-        ticketPaper += "|\n+--------------------------------------------------+";
-        setTicketPaper(ticketPaper);
-
     }
 
     public String getSeatArrangement(ReserveSeat movie) {
@@ -394,7 +316,6 @@ public class ReserveSeat {
 
     public void chooseSchedule(String movie) {
         int i = 0, k = 0, totalNumberOfChosenMovie = 0;
-        int[] availableSeats = new int[getCSVSize()];
         String confirm = "N", choice = "";
         ReserveSeat[] schedule;
         System.out.println("\nGreat! Here are our schedules for the " + movie + " movie");
@@ -407,19 +328,23 @@ public class ReserveSeat {
         for (i = 0; i < getCSVSize(); i++) {
             if (movies[i].getTitle().equals(movie)) {
                 setSeats(movies[i]);
-                availableSeats[i] = movies[i].getSeatsNum();
                 schedule[k++] = movies[i];
             }
         }
+        int[] availableSeats = new int[k];
         while (confirm.equals("N")) {
-            System.out.println("------------------------------------------------------------------------------------");
+            System.out.println("*----------------------------------*");
             for (i = 0; i < k; i++) {
-                System.out.println("[" + (i + 1) + "] Cinema: " + schedule[i].getCinemaNum() + ", Date: "
-                        + schedule[i].getDate() + ", Time: " + schedule[i].getTime() + ", Movie Length: "
-                        + schedule[i].getMovieLength() + ", Seats: " + schedule[i].getSeatsNum());
+                availableSeats[i] = schedule[i].getSeatsNum();
+                System.out.println("[" + (i + 1) + "] Cinema " + schedule[i].getCinemaNum() + ", "
+                        + schedule[i].getSeatsNum() + " seats available");
+                if (i > 8) {
+                    System.out.print(" ");
+                }
+                System.out.println("    " + schedule[i].getDate() + " @ " + schedule[i].getTime() + " - "
+                        + schedule[i].getMovieLength() + " hrs.\n");
             }
-            System.out.print(
-                    "------------------------------------------------------------------------------------\nChoose your schedule: ");
+            System.out.print("*----------------------------------*\nChoose your schedule: ");
 
             choice = sc.nextLine();
             while (!choice.matches("back") && !choice.matches("-?\\d+(\\.\\d+)?")
@@ -448,10 +373,11 @@ public class ReserveSeat {
         String confirm = "N";
         String ticketSeats = "";
         int instanceChecker = 0, i, j;
+        // setSeats(movie);
         while (confirm.equals("N")) {
-            System.out.print("\nCinema: " + movie.getCinemaNum() + ", Date: " + movie.getDate() + ", Time: "
-                    + movie.getTime() + ", Movie Length: " + movie.getMovieLength()
-                    + "\nHow many seats will you take [1-" + availableSeats + "]? ");
+            System.out.print("\nCinema " + movie.getCinemaNum() + ", " + movie.getDate() + " @ " + movie.getTime()
+                    + " - " + movie.getMovieLength() + "hrs.\nHow many seats will you take [1-" + availableSeats
+                    + "]? ");
             String choice = sc.nextLine();
             while (!choice.matches("-?\\d+(\\.\\d+)?") && !choice.matches("back")
                     || !choice.matches("back") && Integer.parseInt(choice) > availableSeats
@@ -528,7 +454,7 @@ public class ReserveSeat {
                 checkout.generatePrice();
             }
         }
-        System.out.println("Would you like to do reserve another movie? [Y/N] ");
+        System.out.print("Would you like to do reserve another movie? [Y/N] ");
         confirm = sc.nextLine();
         while (!confirm.equals("Y") && !confirm.equals("N") || confirm.equals("Y") && confirm.equals("N")) {
             System.out.print("Please choose between 'Y' or 'N': ");
@@ -537,6 +463,7 @@ public class ReserveSeat {
         if (confirm.equals("Y")) {
             displayMovies();
         } else {
+            System.out.println("\n*----------------------------------*\n");
             Menu menu = new Menu();
             menu.startMenu();
         }
