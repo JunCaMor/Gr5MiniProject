@@ -111,7 +111,7 @@ public class ReserveSeat {
     }
     public String getTitle(){
         return title;
-    }
+    } 
     public void setMovieLength(String movieLength){
         this.movieLength=movieLength;
     }
