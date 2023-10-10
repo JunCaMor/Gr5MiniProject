@@ -111,7 +111,7 @@ public class ReserveSeat {
     }
     public String getTitle(){
         return title;
-    }
+    } 
     public void setMovieLength(String movieLength){
         this.movieLength=movieLength;
     }
@@ -148,7 +148,7 @@ public class ReserveSeat {
         String[] selectSeats=seatSample;
         String[] ticketID;
         String[] seatArray=new String[40];
-        int i=0, j=0, ticketSeatsNum=0, movieTicketsNum=0, start=0, end=2;
+        int i=0, j=0, movieTicketsNum=0;
         try{
             BufferedReader read = new BufferedReader(new FileReader("Reservations.csv"));
             String str;
@@ -157,7 +157,7 @@ public class ReserveSeat {
                 tickets++;
                 String[] data=str.split(",");
                 temp=data[0].replace("\"","");
-                if(!temp.equals("")){
+                if(!temp.equals("")){ // Denies empty input
                     if(temp.substring(0, 12).equals(movie.getID())){
                         movieTicketsNum++;
                     }
@@ -169,9 +169,11 @@ public class ReserveSeat {
             while((str=read2.readLine())!=null){
                 String[] data=str.split("\",\"");
                 temp=data[0].replace("\"","");
-                if(temp.substring(0, 12).equals(movie.getID())){
-                    ticketID[i]=temp;
-                    ticketSeats+=data[4].replace("\"","");
+                if(!temp.equals("")){ // Denies empty input
+                    if(temp.substring(0, 12).equals(movie.getID())){
+                        ticketID[i]=temp;
+                        ticketSeats+=data[4].replace("\"","");
+                    }
                 }
             }
             read2.close();
@@ -181,6 +183,9 @@ public class ReserveSeat {
                     seatArray[j++]=ticketSeats.substring(i,i+2);
                 }
             }
+            // for(i=0; i<j; i++){
+            //     System.out.println(seatArray[i]);
+            // }
             for(i=0; i<j; i++){
                 for(int k=0; k<40; k++){
                     if(seatArray[i].equals(selectSeats[k])){
@@ -422,6 +427,7 @@ public class ReserveSeat {
                 confirm = sc.next() + sc.nextLine();
             }
             if (confirm.equals("Y")) {
+                System.out.println(movie.getID()+String.valueOf(getTickets())+" "+movie.getTitle()+" "+movie.getDate()+" "+movie.getCinemaNum()+" "+movie.getTime()+" "+ticketSeats+" "+movie.getPremiere());
                 Checkout checkout=new Checkout(movie.getID()+String.valueOf(getTickets()),movie.getTitle(),movie.getDate(),movie.getCinemaNum(),movie.getTime(),ticketSeats, movie.getPremiere());
                 checkout.generatePrice();
             }
