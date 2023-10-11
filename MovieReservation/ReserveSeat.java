@@ -341,8 +341,12 @@ public class ReserveSeat {
                 if (i > 8) {
                     System.out.print(" ");
                 }
-                System.out.println("    " + schedule[i].getDate() + " @ " + schedule[i].getTime() + " - "
-                        + schedule[i].getMovieLength() + " hrs.\n");
+                System.out.print("    " + schedule[i].getDate() + " @ " + schedule[i].getTime() + " - "
+                        + schedule[i].getMovieLength() + " hrs.");
+                        if(schedule[i].getPremiere().equals("true")){
+                            System.out.print(" PREMIERE");
+                        }
+                        System.out.println();
             }
             System.out.print("*----------------------------------*\nChoose your schedule: ");
 
@@ -351,11 +355,11 @@ public class ReserveSeat {
             while (!choice.matches("back") && !choice.matches("-?\\d+(\\.\\d+)?")
                     || !choice.matches("back") && Integer.parseInt(choice) > k
                     || !choice.matches("back") && Integer.parseInt(choice) < 1) {
-                System.out.print("Please choose within the choices: ");
+                System.out.print("The schedule does not exist. Please choose within the choices: ");
                 choice = sc.nextLine();
             }
             while (schedule[Integer.parseInt(choice)-1].getSeatsNum()<=0) {
-                System.out.print("Please choose another movie: ");
+                System.out.print("This schedule is fully booked. \nPlease choose another schedule: ");
                 choice = sc.nextLine();
             }
             if (choice.matches("back")) { // reruns the method
@@ -401,7 +405,7 @@ public class ReserveSeat {
                 System.out.print("[" + (i + 1) + "] ");
                 String choice2 = sc.nextLine();
                 while (!choice2.matches("back") && !Arrays.asList(seatSample).contains(choice2)) {
-                    System.out.print("Please choose within the choices:\n[" + (i + 1) + "] ");
+                    System.out.print("The seat does not exist. Please choose within the choices:\n[" + (i + 1) + "] ");
                     choice2 = sc.nextLine();
                 }
                 if (choice2.matches("back")) { // reruns the method
@@ -411,10 +415,10 @@ public class ReserveSeat {
                     instanceChecker = 0;
                     for (j = 0; j <= i; j++) {
                         if (choice2.equals(chosenSeats[j])) {
-                            System.out.print("Please choose another seat:\n[" + (i + 1) + "] ");
+                            System.out.print("The seat "+choice2+" is already taken. \nPlease choose another seat:\n[" + (i + 1) + "] ");
                             choice2 = sc.nextLine();
                             while (!choice2.matches("back") && !Arrays.asList(seatSample).contains(choice2)) {
-                                System.out.print("Please choose within the seats:\n[" + (i + 1) + "] ");
+                                System.out.print("The seat does not exist. Please choose within the seats:\n[" + (i + 1) + "] ");
                                 choice2 = sc.nextLine();
                             }
                             if (choice2.matches("back")) { // reruns the method
