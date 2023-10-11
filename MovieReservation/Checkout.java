@@ -230,7 +230,7 @@ public class Checkout {
                 if (confirm.equals("Y")) {
                     // int x; // This is for trapping the excess input bug
                     for (i = 0; i < Integer.parseInt(choice); i++) {
-                        total += 245;
+                        total += 280;
                     }
                     for (j = 0; j < seatAmount - Integer.parseInt(choice); j++) {
                         total += 350;
