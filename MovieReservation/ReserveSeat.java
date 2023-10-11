@@ -347,14 +347,15 @@ public class ReserveSeat {
             System.out.print("*----------------------------------*\nChoose your schedule: ");
 
             choice = sc.nextLine();
-            while (schedule[Integer.parseInt(choice)-1].getSeatsNum()==0) {
-                System.out.print("Please choose another movie: ");
-                choice = sc.nextLine();
-            }
+            
             while (!choice.matches("back") && !choice.matches("-?\\d+(\\.\\d+)?")
                     || !choice.matches("back") && Integer.parseInt(choice) > k
                     || !choice.matches("back") && Integer.parseInt(choice) < 1) {
                 System.out.print("Please choose within the choices: ");
+                choice = sc.nextLine();
+            }
+            while (schedule[Integer.parseInt(choice)-1].getSeatsNum()<=0) {
+                System.out.print("Please choose another movie: ");
                 choice = sc.nextLine();
             }
             if (choice.matches("back")) { // reruns the method
